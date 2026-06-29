@@ -1,0 +1,224 @@
+
+    <html>
+    <head>
+        <style>
+            body { font-family: "Times New Roman", Times, serif; font-size: 12px; line-height: 1.25; color: #000; margin: 40px; }
+            h1, h2, h3, h4 { text-align: center; color: #000; font-weight: bold; margin: 10px 0; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 12px; }
+            tr { page-break-inside: avoid; }
+            th, td { border: 1px solid #000; padding: 12px 14px; vertical-align: top; }
+            .bg-gray { background-color: #f2f2f2; font-weight: bold; }
+            .page-break { page-break-before: always; }
+            .signature-table { width: 100%; border: none; margin-top: 50px; }
+            .signature-table td { border: none; padding: 0; width: 50%; }
+            .pre-text { white-space: pre-wrap; font-family: "Times New Roman", Times, serif; font-size: 12px; line-height: 1.3; }
+        </style>
+    </head>
+    <body>
+        <h2>RENCANA PELAKSANAAN PEMBELAJARAN (RPP)<br>TERINTEGRASI 5 NILAI KARTIKA (5NK)</h2>
+        <table>
+            <tr class="bg-gray"><td width="5%"><b>A</b></td><td width="30%"><b>Spesifikasi</b></td><td></td></tr>
+            <tr><td>1</td><td>Satuan Pendidikan</td><td>SMK Kartika X-1</td></tr>
+            <tr><td>2</td><td>Mata Pelajaran</td><td>Keamanan Jaringan (Konsentrasi Keahlian TKJ)</td></tr>
+            <tr><td>3</td><td>Kelas / Semester</td><td>XII TKJ / Ganjil</td></tr>
+            <tr><td>4</td><td>Topik Pembelajaran</td><td>Keamanan Jaringan</td></tr>
+            <tr><td>5</td><td>Alokasi Waktu</td><td>32 x 45 menit (8 Pertemuan)</td></tr>
+        </table>
+        
+        <table>
+            <tr class="bg-gray"><td width="5%"><b>B</b></td><td width="30%"><b>Identifikasi</b></td><td></td></tr>
+            <tr><td>1</td><td>Asesmen Diagnostik / Awal</td><td>Tes kognitif awal mengenai konsep dasar jaringan komputer, port, protokol, dan model OSI.</td></tr>
+            <tr><td>2</td><td>Dimensi Profil Lulusan</td><td>
+                [&radic;] DPL 1 Keimanan<br>
+                [&radic;] DPL 2 Kewargaan<br>
+                [&radic;] DPL 3 Penalaran Critis<br>
+                [&radic;] DPL 4 Kreativitas<br>
+                [&radic;] DPL 5 Kolaborasi<br>
+                [&radic;] DPL 6 Kemandirian<br>
+                [&radic;] DPL 7 Kesehatan<br>
+                [&radic;] DPL 8 Komunikasi
+            </td></tr>
+            <tr><td>3</td><td>Penguatan Karakter 5NK</td><td>
+                [&radic;] Berbudi Luhur<br>
+                [&radic;] Disiplin<br>
+                [&radic;] Cinta Tanah Air<br>
+                [&radic;] Cerdas<br>
+                [&radic;] Terampil
+            </td></tr>
+            <tr><td>4</td><td>Indikator 5NK</td><td>Disiplin mematuhi Kebijakan Penggunaan Jaringan, Cerdas menganalisis log anomali dan celah keamanan secara kritis, Terampil mengonfigurasi perangkat pertahanan server, Budi Luhur menjaga privasi data pengguna, Cinta Tanah Air mengamankan infrastruktur digital sekolah sebagai wujud bela negara.</td></tr>
+            <tr><td>5</td><td>Materi Integrasi 5NK</td><td>Penyusunan Kebijakan Penggunaan Jaringan (KPJ) untuk infrastruktur sekolah.</td></tr>
+        </table>
+
+        <div class="page-break"></div>
+        <table>
+            <tr class="bg-gray"><td width="5%"><b>C</b></td><td colspan="2"><b>Desain Pembelajaran</b></td></tr>
+            <tr><td>1</td><td width="25%">Tujuan Pembelajaran</td><td>- Merumuskan Kebijakan Penggunaan Jaringan (KPJ) dan menganalisis jenis ancaman jaringan.<br>- Mengonfigurasi Stateful Firewall (IPTables/UFW) pada host dan server Linux.<br>- Menerapkan Port Knocking untuk mengamankan port administratif (SSH).<br>- Mengonfigurasi Server Autentikasi terpusat menggunakan RADIUS/AAA.<br>- Menginstalasi dan menguji Intrusion Detection System (IDS) menggunakan Snort.<br>- Melakukan Hardening Layanan Server (SSL/TLS pada Web Server dan Secure SSH).<br>- Mengamankan komunikasi data dengan teknik Kriptografi (Asimetris/Simetris).<br>- Membangun Virtual Private Network (VPN) dengan OpenVPN/IPsec untuk akses remote aman.</td></tr>
+            <tr><td>2</td><td>Kerangka Pembelajaran</td><td>
+                <b>a. Model:</b> Project Based Learning (PjBL) + TEFA (Teaching Factory)<br>
+                <b>b. Kemitraan:</b> Industri Network Security / ISP (Mitra TEFA)<br>
+                <b>c. Lingkungan:</b> Lab Komputer Jaringan / Lab Server Keamanan<br>
+                <b>d. Digital:</b> VirtualBox/VMware, Debian/Ubuntu Server, Kali Linux, Wireshark, Snort, OpenVPN, LKPD digital
+            </td></tr>
+        </table>
+
+        <table>
+            <tr class="bg-gray"><td width="5%"><b>D</b></td><td colspan="2"><b>Pengalaman Belajar</b></td></tr>
+            <tr><td>1</td><td colspan="2"><b>Kegiatan Awal:</b><br>- Guru memaparkan studi kasus nyata tentang kebocoran data akibat kata sandi lemah.<br>- Guru mengajukan pertanyaan pemantik mengenai analogi keamanan fisik dan digital.<br>- Guru mereview materi prasyarat mengenai dasar-dasar port dan protokol jaringan.</td></tr>
+            <tr><td rowspan="3">2</td><td width="15%" class="bg-gray">Memahami</td><td>Siswa mempelajari konsep CIA Triad (Confidentiality, Integrity, Availability), AAA, dan anatomi serangan.<br>Siswa memahami konsep firewall layer 3 dan 4, stateful packet inspection, serta default policy (DROP vs ACCEPT).<br>Siswa memahami mekanisme kerja daemon port knocking (knockd) yang mendengarkan log firewall untuk mendeteksi pola ketukan.<br>Siswa memahami konsep AAA (Authentication, Authorization, Accounting) dan protokol autentikasi terpusat RADIUS & TACACS+.<br>Siswa memahami perbedaan IDS (mendeteksi & mencatat log) dan IPS (mendeteksi & memblokir secara aktif), serta deteksi berbasis Signature vs Anomaly.<br>Siswa memahami kelemahan protokol SSH v1, otentikasi password polos, serta enkripsi SSL/TLS pada web server Apache/Nginx.<br>Siswa memahami perbedaan Kriptografi Simetris (kunci sama, misal AES) dan Asimetris (kunci publik & privat, misal RSA).<br>Siswa memahami cara kerja Virtual Private Network (VPN) dan protokol enkripsi jalur data (OpenVPN/IPsec).</td></tr>
+            <tr><td class="bg-gray">Mengaplikasi</td><td>Kelompok siswa merancang draf Kebijakan Penggunaan Jaringan (KPJ) sekolah dan menggunakan Wireshark untuk menganalisis plaintext password yang bocor (sniffing).<br>Siswa mengonfigurasi IPTables di Linux Debian Server untuk mengizinkan hanya port tertentu (SSH, HTTP) dan menutup port lainnya.<br>Siswa menginstalasi knockd pada server Debian dan menetapkan sequence ketukan port (7000, 8000, 9000) untuk membuka port SSH.<br>Siswa membangun server FreeRADIUS terintegrasi dengan MikroTik/Cisco Switch dan mengonfigurasi user pada file users.<br>Siswa mengonfigurasi rule kustom di IDS Snort pada Debian Server untuk mendeteksi serangan ICMP Flood.<br>Siswa melakukan hardening SSH (menonaktifkan root login, ubah port default, pasang SSH Key-Pair) dan membuat Self-Signed Certificate SSL untuk HTTPS Apache/Nginx.<br>Siswa mengonfigurasi komunikasi data aman dengan teknik kriptografi simetris/asimetris.<br>Siswa mengonfigurasi dan membangun terowongan VPN menggunakan OpenVPN/IPsec pada server.</td></tr>
+            <tr><td class="bg-gray">Merefleksi</td><td>Siswa mendiskusikan kerawanan pengiriman data tanpa enkripsi dan pentingnya kebijakan akses ketat (Least Privilege).<br>Siswa melakukan pemindaian port menggunakan Nmap dari Kali Linux untuk memverifikasi efektivitas rule IPTables yang dipasang.<br>Siswa mempraktikkan pengetukan port dari client Linux dan memantau terbuatnya dynamic rules iptables secara otomatis.<br>Siswa melacak log login (accounting) pada server RADIUS untuk mengaudit akses administrator perangkat jaringan.<br>Siswa menguji serangan ping flood dari client dan memantau alert yang terpicu secara real-time pada log Snort.<br>Siswa membandingkan keandalan login SSH berbasis kunci privat dengan login berbasis password konvensional.<br>Siswa menganalisis integritas data hasil enkripsi sebelum dan setelah ditransmisikan melalui jaringan.<br>Siswa memverifikasi enkripsi paket VPN melalui Wireshark untuk membuktikan kerahasiaan data terowongan transmisi.</td></tr>
+            <tr><td>3</td><td colspan="2"><b>Kegiatan Penutup:</b><br>- Siswa menuliskan exit ticket berisi perbedaan mendasar antara vulnerability dan exploit.<br>- Guru menekankan pentingnya firewall host sebagai gardu pertahanan pertama server.<br>- Siswa berdiskusi tentang kegunaan port knocking dalam mencegah serangan brute force SSH secara masif.<br>- Guru mengevaluasi perbandingan tingkat keamanan database lokal vs database terpusat (RADIUS/LDAP).<br>- Guru menjelaskan tantangan zero-day attack yang tidak terdeteksi oleh signature-based IDS.<br>- Guru mereview pentingnya sertifikat digital CA (Certificate Authority) di industri global.<br>- Siswa menyimpulkan kelemahan taktis dari metode kriptografi simetris jika kunci bocor.<br>- Guru dan siswa mengevaluasi keandalan fungsional konektivitas VPN dalam skenario remote working.</td></tr>
+        </table>
+
+        <table>
+            <tr class="bg-gray"><td width="5%"><b>E</b></td><td width="30%"><b>Asesmen</b></td><td></td></tr>
+            <tr><td>1</td><td>Proses</td><td>Observasi kinerja konfigurasi keamanan server, analisis keaktifan diskusi, dan laporan analisis log IDS/firewall.</td></tr>
+            <tr><td>2</td><td>Akhir</td><td>Penilaian proyek akhir (konfigurasi keamanan terintegrasi), pengerjaan LKPD, dan tes tertulis akhir unit.</td></tr>
+        </table>
+
+        <table class="signature-table">
+            <tr>
+                <td>Mengetahui,<br>Kepala Sekolah SMK Kartika X-1<br><br><br><br><b>M. Hidayatullah, S.Kom</b></td>
+                <td>Guru Mata Pelajaran<br><br><br><br><b>Allan Parindera, S.Kom</b></td>
+            </tr>
+        </table>
+
+        <div class="page-break"></div>
+        <h2>LAMPIRAN RPP 5NK</h2>
+        
+        <div class="page-break"></div>
+        <h3>LAMPIRAN 1: INSTRUMEN ASESMEN AWAL (DIAGNOSTIK)</h3>
+        <div class="pre-text">INSTRUMEN ASESMEN AWAL (DIAGNOSTIK)
+
+A. ASESMEN KOGNITIF (Pilihan Ganda & Esai Logika)
+1. Port default manakah yang digunakan untuk protokol SSH?
+   a. 21  b. 22  c. 23  d. 80
+2. Di layer manakah dalam model OSI sebuah firewall IP Tables bekerja untuk memfilter alamat IP?
+   a. Layer 1 (Physical)  b. Layer 2 (Data Link)  c. Layer 3 (Network)  d. Layer 7 (Application)
+3. Apa yang dimaksud dengan konsep CIA Triad dalam keamanan informasi?
+   a. Central, Internal, Active  b. Confidentiality, Integrity, Availability  c. Control, Identity, Authorization
+4. Jelaskan apa perbedaan mendasar antara protokol HTTP dan HTTPS dalam pengiriman data.
+5. Logika Keamanan: Mengapa membiarkan port default SSH terbuka tanpa proteksi tambahan berbahaya?
+
+B. ASESMEN NON-KOGNITIF
+1. Apakah Anda memiliki laptop pribadi yang mendukung virtualisasi (RAM minimal 4GB/8GB) untuk praktik mandiri? (Ya/Tidak)
+2. Bagaimana ketertarikan Anda terhadap bidang Network Security / Cybersecurity? (Sangat Tertarik / Cukup / Kurang)
+3. Gaya belajar manakah yang paling memudahkan Anda memahami materi praktikum? (Visual / Auditorial / Kinestetik/Praktik langsung)</div>
+        
+        <div class="page-break"></div>
+        <h3>LAMPIRAN 2: LEMBAR KERJA PESERTA DIDIK (LKPD)</h3>
+        <div class="pre-text">LEMBAR KERJA PESERTA DIDIK (LKPD) - KELOMPOK
+
+Topik: Pengamanan Host dan Server Terintegrasi (Konfigurasi IPTables & Port Knocking)
+Nilai Karakter: Cerdas (menganalisis rule), Terampil (mengonfigurasi server), Cinta Tanah Air (menjaga integritas server lokal sekolah).
+
+Instruksi Kerja:
+1. Bentuk kelompok kerja yang terdiri dari 3-4 siswa.
+2. Siapkan dua mesin virtual (VM Debian Server sebagai target server dan VM Kali Linux sebagai penyerang/penguji).
+3. Lakukan instalasi paket daemon 'knockd' pada VM Debian Server.
+4. Konfigurasikan file /etc/iptables/rules.v4 untuk memblokir seluruh koneksi masuk kecuali port 80 (HTTP) dan port 443 (HTTPS).
+5. Konfigurasikan file /etc/knockd.conf dengan sequence ketukan (7000, 8000, 9000) untuk membuka port SSH (22) secara dinamis.
+
+Tabel Eksplorasi Pengujian:
++---+--------------------------+-----------------------+-----------------------------+-----------------------------+
+| No| Aktivitas Pengujian      | Sebelum Knocking      | Proses / Ketukan yang Dikirim| Hasil Akhir / Status Port   |
++---+--------------------------+-----------------------+-----------------------------+-----------------------------+
+| 1 | Port Scanning (Nmap)     | [Tertutup/Terbuka?]   | -                           | [Tertutup/Terbuka?]         |
+| 2 | SSH Connection Client    | [Berhasil/Ditolak?]   | knock <ip_server> 7000 8000..| [Berhasil/Ditolak?]         |
+| 3 | Analisis Log Server      | -                     | tail -f /var/log/syslog     | [Sebutkan log yang muncul]  |
++---+--------------------------+-----------------------+-----------------------------+-----------------------------+
+
+Diskusi Kelompok: Analisis bagaimana port knocking dapat mempersulit penyerang yang melakukan teknik automated brute force.</div>
+
+        <div class="page-break"></div>
+        <h3>LAMPIRAN 3: RUBRIK ASESMEN</h3>
+        <div class="pre-text">RUBRIK ASESMEN SUMATIF PROYEK
+
+Kriteria & Deskripsi Skor:
+1. Konfigurasi Sistem (Bobot 35%):
+   - 90-100: Firewall aktif, rule IPTables presisi, port knocking berfungsi sempurna tanpa error.
+   - 80-89: Firewall aktif, namun ada kesalahan minor pada urutan rule IPTables.
+   - 70-79: Konfigurasi berjalan namun port knocking gagal merespons ketukan dengan konsisten.
+   - <70: Konfigurasi gagal, port server tidak terlindungi.
+2. Analisis Keamanan & Log (Bobot 25%):
+   - 90-100: Mampu menganalisis log koneksi/log snort dengan detail, akurat, dan logis.
+   - 80-89: Mampu menganalisis log namun interpretasi jenis serangan kurang tepat.
+   - 70-79: Analisis log sangat minim dan hanya membaca log tanpa memahami maksudnya.
+   - <70: Tidak mampu menganalisis log sama sekali.
+3. Kerja Sama & Kolaborasi (Bobot 20%):
+   - 90-100: Pembagian tugas merata, aktif berdiskusi, menunjukkan perilaku saling membantu.
+   - 80-89: Aktif bekerja namun pembagian tugas kurang merata dalam kelompok.
+   - 70-79: Pasif dan hanya bergantung pada satu anggota kelompok.
+   - <70: Tidak menunjukkan kerja sama sama sekali.
+4. Presentasi Proyek (Bobot 20%):
+   - 90-100: Penyampaian sistematis, materi dikuasai penuh, jawaban sesi tanya jawab tepat.
+   - 80-89: Penyampaian baik namun kurang lancar saat sesi tanya jawab.
+   - 70-79: Terbata-bata dan tidak menguasai materi yang dipresentasikan.
+   - <70: Tidak mampu mempresentasikan hasil proyek.
+
+Rumus Nilai Akhir (NA):
+NA = (Skor Konfigurasi * 0.35) + (Skor Analisis * 0.25) + (Skor Kolaborasi * 0.20) + (Skor Presentasi * 0.20)</div>
+
+        <div class="page-break"></div>
+        <h3>LAMPIRAN 4: RINGKASAN MATERI PEMBELAJARAN</h3>
+        <div class="pre-text">RINGKASAN MATERI PEMBELAJARAN KEAMANAN JARINGAN
+
+1. KEBIJAKAN PENGGUNAAN JARINGAN (KPJ) & ANCAMAN:
+   KPJ (Network Usage Policy) mengatur hak akses, tanggung jawab, dan batasan penggunaan infrastruktur jaringan. Ancaman meliputi Sniffing, Spoofing, Brute Force, Denial of Service (DoS), dan Man-in-the-Middle (MitM).
+2. STATEFUL FIREWALL (IPTABLES):
+   Bekerja memeriksa status paket (ESTABLISHED, RELATED, NEW, INVALID). Rule dasar membatasi input dengan default policy DROP. Syntax utama: `iptables -A INPUT -p tcp --dport 22 -j ACCEPT`.
+3. PORT KNOCKING:
+   Mekanisme keamanan dengan cara menyembunyikan port aktif di balik firewall. Port hanya akan terbuka jika klien mengirimkan paket data ke urutan port tertentu secara berurutan sesuai konfigurasi pada file `/etc/knockd.conf`.
+4. SERVER AUTENTIKASI (AAA & RADIUS):
+   Authentication (siapa user), Authorization (apa haknya), Accounting (apa aktivitasnya). FreeRADIUS mensentralisasi otentikasi user perangkat jaringan kabel, nirkabel, maupun server lokal.
+5. INTRUSION DETECTION SYSTEM (IDS) SNORT:
+   Sistem monitoring trafik real-time yang menggunakan signatures untuk mengenali anomali paket data. Aturan ditulis dalam file `/etc/snort/rules/local.rules`.
+6. HARDENING SERVICES & SSL/TLS:
+   Langkah mengamankan OS dan aplikasi. SSH Hardening: matikan root login, ubah port 22 ke port kustom, gunakan SSH Key. SSL/TLS: mengenkripsi komunikasi web server (HTTP -> HTTPS) menggunakan sertifikat digital.
+7. KRIPTOGRAFI:
+   Seni mengamankan pesan. Kriptografi Simetris (AES, DES) menggunakan satu kunci untuk enkripsi/dekripsi. Kriptografi Asimetris (RSA) menggunakan pasangan public key dan private key.
+8. VIRTUAL PRIVATE NETWORK (VPN):
+   Teknologi untuk membangun jalur komunikasi terenkripsi (tunnel) melalui jaringan publik. Protokol populer: OpenVPN dan IPsec yang menjamin kerahasiaan (confidentiality) dan integritas data remote.</div>
+
+        <div class="page-break"></div>
+        <h3>LAMPIRAN 5: SOAL EVALUASI & KUNCI JAWABAN</h3>
+        <div class="pre-text">BANK SOAL EVALUASI KEAMANAN JARINGAN
+
+1. Manakah perintah IPTables yang benar untuk memblokir paket ping (ICMP) dari luar ke server?
+   a. iptables -A INPUT -p icmp -j ACCEPT
+   b. iptables -A INPUT -p icmp -j DROP
+   c. iptables -A OUTPUT -p icmp -j DROP
+   d. iptables -A FORWARD -p icmp -j REJECT
+
+2. Di manakah letak file konfigurasi utama untuk menentukan urutan ketukan pada daemon knockd?
+   a. /etc/iptables/rules.v4
+   b. /etc/knockd.conf
+   c. /var/log/syslog
+   d. /etc/init.d/knockd
+
+3. Protokol AAA yang bersifat open standard dan sering digunakan untuk mengamankan akses jaringan wireless/WPA-Enterprise adalah...
+   a. TACACS+
+   b. RADIUS
+   c. LDAP
+   d. Kerberos
+
+4. Rule Snort berikut: `alert icmp any any -> $HOME_NET any (msg:"Ping Detect"; sid:100001;)` berfungsi untuk...
+   a. Memblokir seluruh paket ICMP
+   b. Mendeteksi paket ICMP masuk ke jaringan lokal dan memicu alert
+   c. Mengirimkan paket ICMP dari server
+   d. Menghapus log ICMP otomatis
+
+5. Mengapa penggunaan otentikasi SSH Key-Pair jauh lebih aman dibandingkan password biasa?
+   a. Karena SSH Key menggunakan enkripsi simetris
+   b. Karena private key tidak pernah dikirimkan melalui jaringan saat proses handshake
+   c. Karena SSH Key otomatis mematikan port SSH
+   d. Karena SSH Key tidak membutuhkan memori RAM server
+
+KUNCI JAWABAN:
+1. b. iptables -A INPUT -p icmp -j DROP
+2. b. /etc/knockd.conf
+3. b. RADIUS
+4. b. Mendeteksi paket ICMP masuk ke jaringan lokal dan memicu alert
+5. b. Karena private key tidak pernah dikirimkan melalui jaringan saat proses handshake</div>
+    </body>
+    </html>

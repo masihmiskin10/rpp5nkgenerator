@@ -148,7 +148,8 @@ app.post('/api/state', (req, res) => {
 
 app.post('/api/parse', async (req, res) => {
     const { text, model } = req.body;
-    const selectedModel = model || "ag/gemini-3.1-pro-low";
+    const selectedModel = model || "ag/gemini-3.5-flash-low";
+    console.log(`[PARSE] Using model: ${selectedModel}`);
     const currentState = getSessionState(req);
     try {
         const trimmed = text.substring(0, 100000); // Increased from 10k to 100k characters
@@ -181,7 +182,8 @@ app.post('/api/upload-pdf', upload.single('file'), async (req, res) => {
 
 app.post('/api/generate', async (req, res) => {
     const { topic, classLevel, totalJp, guideline, model } = req.body;
-    const selectedModel = model || "ag/gemini-3.1-pro-low";
+    const selectedModel = model || "ag/gemini-3.5-flash-low";
+    console.log(`[GENERATE] Using model: ${selectedModel}`);
     const currentState = getSessionState(req);
     try {
         const prompt = `Anda adalah AI Asisten Kurikulum Merdeka 5NK di SMK Kartika X-1.
@@ -542,7 +544,8 @@ function buildHtml(data, config = {}) {
 // Endpoint untuk evaluasi, review, dan koreksi RPP otomatis
 app.post('/api/improve', async (req, res) => {
     const { actionType, guideline, model } = req.body;
-    const selectedModel = model || "ag/gemini-3.1-pro-low";
+    const selectedModel = model || "ag/gemini-3.5-flash-low";
+    console.log(`[IMPROVE] Using model: ${selectedModel}`);
     const currentState = getSessionState(req);
     try {
         let prompt = "";

@@ -3,339 +3,413 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RPP 5NK Web Builder</title>
+    <title>RPP 5NK Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #FAFAFA; color: #171717; }
-        .sidebar { height: 100vh; border-right: 1px solid #E5E5E5; background: #FFFFFF; }
-        .nav-item { padding: 10px 14px; border-radius: 6px; cursor: pointer; font-weight: 500; color: #52525B; margin-bottom: 4px; transition: all 0.15s; }
-        .nav-item:hover { background: #F4F4F5; color: #09090B; }
-        .nav-item.active { background: #F4F4F5; color: #09090B; border: 1px solid #E4E4E7; font-weight: 600; }
-        input[type="text"], select, textarea { 
-            width: 100%; padding: 8px 12px; border: 1px solid #E4E4E7; border-radius: 6px; 
-            outline: none; transition: border 0.15s; font-size: 14px; margin-top: 4px;
-        }
-        input[type="text"]:focus, select:focus, textarea:focus { border-color: #09090B; }
-        .btn { padding: 8px 16px; background: #09090B; color: white; border-radius: 6px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
-        .btn:hover { background: #27272A; }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .card { background: white; border: 1px solid #E4E4E7; border-radius: 8px; padding: 24px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
-        .label-text { font-size: 13px; font-weight: 600; color: #09090B; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fafafa; color: #09090b; }
+        .editor-container { height: calc(100vh - 65px); }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e4e4e7; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #d4d4d8; }
     </style>
 </head>
-<body>
-    <div id="app" class="flex">
-        <!-- Sidebar -->
-        <div class="w-64 sidebar fixed p-6 flex flex-col justify-between">
-            <div>
-                <h1 class="text-xl font-bold mb-1">RPP 5NK Studio</h1>
-                <p class="text-xs text-gray-500 mb-8 tracking-widest uppercase">SMK Kartika X-1</p>
-                
-                <div class="space-y-1">
-                    <div 
-                        v-for="(step, index) in steps" 
-                        :key="index"
-                        @click="currentStep = index"
-                        class="nav-item text-sm"
-                        :class="{ 'active': currentStep === index }">
-                        {{ step }}
-                    </div>
-                </div>
+<body class="overflow-hidden">
+    <div id="app" class="flex flex-col h-screen">
+        <!-- Top Navbar -->
+        <header class="h-[65px] border-b border-zinc-200 bg-white flex items-center justify-between px-6 z-10 shrink-0">
+            <div class="flex items-center space-x-3">
+                <span class="text-lg font-bold tracking-tight text-zinc-900">RPP 5NK Studio</span>
+                <span class="text-xs bg-zinc-100 text-zinc-600 font-semibold px-2 py-0.5 rounded border border-zinc-200">SMK Kartika X-1</span>
             </div>
-            
-            <div class="border-t pt-4">
-                <button @click="saveState" class="w-full text-center text-xs font-semibold text-gray-500 hover:text-black py-2 border rounded border-gray-200">
+            <div class="flex flex-col text-[10px] text-zinc-400 font-mono">
+                <span>Session: {{ sessionId }}</span>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span v-if="loadingPdf" class="text-xs text-zinc-500 animate-pulse">Membuat PDF...</span>
+                <button @click="saveState" class="text-xs font-semibold text-zinc-600 hover:text-zinc-950 px-3 py-2 border rounded-md border-zinc-200 bg-white shadow-sm transition-all duration-150">
                     💾 Simpan Draft
                 </button>
+                <button @click="downloadPdf" :disabled="loading || improving || loadingPdf" class="text-xs font-semibold bg-zinc-950 hover:bg-zinc-800 text-white px-3 py-2 rounded-md transition-all duration-150 disabled:opacity-50 flex items-center space-x-1 shadow-sm">
+                    <span>🖨️ Cetak PDF Resmi</span>
+                </button>
             </div>
-        </div>
+        </header>
 
-        <!-- Main Content -->
-        <div class="ml-64 p-8 w-full max-w-4xl">
-            
-            <!-- Quick Actions Toolbar -->
-            <div class="mb-6 flex space-x-3 items-center bg-white p-4 border rounded-lg">
-                <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Asisten AI:</span>
-                <button @click="triggerImprove('review')" :disabled="improving" class="text-xs btn px-3 py-1">🔍 Review & Saran</button>
-                <button @click="triggerImprove('auto_fix')" :disabled="improving" class="text-xs btn px-3 py-1 bg-indigo-600 hover:bg-indigo-700">⚡ Auto-Lengkapi & Koreksi RPP</button>
-                <span v-if="improving" class="text-xs text-indigo-600 animate-pulse font-medium">Memproses RPP...</span>
-            </div>
+        <!-- Main Body -->
+        <div class="flex flex-1 overflow-hidden">
+            <!-- Left Pane: Editor (Scrollable) -->
+            <div class="w-1/2 flex flex-col border-r border-zinc-200 bg-white overflow-hidden h-full">
+                <!-- Nav Tabs (Fix 8: Step navigation naming & index check) -->
+                <div class="flex border-b border-zinc-200 overflow-x-auto bg-zinc-50 px-4 py-2 space-x-1 shrink-0">
+                    <button 
+                        v-for="(step, idx) in steps" 
+                        :key="idx" 
+                        @click="currentStep = idx" 
+                        :class="currentStep === idx ? 'bg-white text-zinc-950 border-zinc-200 shadow-sm font-semibold' : 'text-zinc-500 hover:text-zinc-950 hover:bg-zinc-100 border-transparent'"
+                        class="text-xs px-3 py-1.5 rounded-md border transition-all duration-150 shrink-0">
+                        {{ step }}
+                    </button>
+                </div>
 
-            <!-- AI Review Feedback Banner -->
-            <div v-if="aiFeedback" class="card bg-zinc-900 text-white relative">
-                <button @click="aiFeedback = ''" class="absolute top-2 right-2 text-zinc-400 hover:text-white text-xs">Tutup</button>
-                <h3 class="font-bold mb-2 text-sm text-zinc-300">Hasil Review & Koreksi RPP:</h3>
-                <pre class="text-xs whitespace-pre-wrap leading-relaxed font-sans">{{ aiFeedback }}</pre>
-            </div>
-            
-            <!-- Step 0: Import -->
-            <div v-if="currentStep === 0">
-                <div class="card">
-                    <h2 class="text-lg font-bold mb-1 text-zinc-900">Fondasi Dokumen</h2>
-                    <p class="text-xs text-zinc-500 mb-6">Unggah berkas RPP PDF lama atau buat topik baru berbasis AI.</p>
+                <!-- Forms Area -->
+                <div class="flex-1 overflow-y-auto p-6 space-y-6">
                     
-                    <div class="flex border-b mb-6">
-                        <button @click="importMode = 'pdf'" :class="{'border-b-2 border-black font-semibold': importMode === 'pdf'}" class="pb-2 px-4 text-sm text-zinc-700"> Adaptasi RPP Lama</button>
-                        <button @click="importMode = 'generate'" :class="{'border-b-2 border-black font-semibold': importMode === 'generate'}" class="pb-2 px-4 text-sm text-zinc-700"> Generator AI</button>
-                    </div>
-
-                    <div v-if="importMode === 'pdf'">
-                        <div class="mb-4">
-                            <label class="label-text">Unggah RPP PDF</label>
-                            <input type="file" @change="handleFileUpload" accept="application/pdf" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 mt-2">
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="label-text">Teks RPP Mentah</label>
-                            <textarea v-model="oldRppText" rows="8" placeholder="Teks terekstrak akan muncul di sini..."></textarea>
-                        </div>
-
-                        <button @click="parseOldRpp" :disabled="loading" class="btn">
-                            {{ loading ? 'Mengekstrak...' : 'Ekstrak dengan AI' }}
-                        </button>
-                    </div>
-
-                    <div v-if="importMode === 'generate'">
-                        <div class="grid grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label class="label-text">Topik Pembelajaran</label>
-                                <input type="text" v-model="genTopic" placeholder="Contoh: Klasifikasi Gambar DL">
-                            </div>
-                            <div>
-                                <label class="label-text">Kelas</label>
-                                <select v-model="genClass">
-                                    <option value="XI">Kelas XI</option>
-                                    <option value="XII">Kelas XII</option>
+                    <!-- AI Assistant Widget -->
+                    <div class="bg-zinc-50 border border-zinc-200 rounded-lg p-4 flex flex-col space-y-3 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold uppercase tracking-wider text-zinc-400">Asisten AI</span>
+                            <div class="flex items-center space-x-2">
+                                <select v-model="selectedModel" class="text-[10px] bg-white border border-zinc-200 text-zinc-700 py-1 px-1.5 rounded outline-none shadow-sm font-medium focus:border-zinc-500">
+                                    <option value="ag/gemini-3.5-flash-low">⚡ Gemini Flash (Cepat/Draf)</option>
+                                    <option value="ag/claude-sonnet-4-6">🧠 Claude Sonnet 3.5 (Akurat)</option>
+                                    <option value="ag/gemini-3.1-pro-low">💎 Gemini Pro (Seimbang)</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="mb-4">
-                            <label class="label-text">Alokasi Waktu</label>
-                            <select v-model="genJp">
-                                <option value="72 JP (Pertemuan 1 s.d. 18 @ 4 JP)">72 JP</option>
-                                <option value="144 JP (Pertemuan 1 s.d. 36 @ 4 JP)">144 JP</option>
-                            </select>
+                        <div class="relative">
+                            <label class="block text-[10px] font-bold text-zinc-500 mb-1">Instruksi Khusus (Pencet Enter untuk Review):</label>
+                            <input type="text" v-model="aiAssistantGuideline" @keyup.enter="triggerImprove('review')" placeholder="Ketik lalu Enter..." class="w-full text-xs py-2 pl-2 pr-16 border border-zinc-200 rounded focus:border-zinc-950 outline-none shadow-sm">
+                            <div class="absolute right-1 top-[18px] flex space-x-1">
+                                <button @click="triggerImprove('review')" :disabled="improving" title="Review (Enter)" class="bg-white border border-zinc-200 hover:bg-zinc-100 p-1.5 rounded text-[10px] shadow-sm">🔍</button>
+                                <button @click="triggerImprove('auto_fix')" :disabled="improving" title="Auto Fix" class="bg-zinc-900 text-white hover:bg-zinc-800 p-1.5 rounded text-[10px] shadow-sm">⚡ Fix</button>
+                            </div>
                         </div>
-                        <button @click="generateNewRpp" :disabled="loading" class="btn">
-                            {{ loading ? 'Menyusun RPP...' : 'Generate RPP' }}
+                        <div v-if="improving" class="text-xs text-zinc-500 animate-pulse flex items-center space-x-1">
+                            <span>Sedang memproses dengan {{ selectedModel }}...</span>
+                        </div>
+                        <div v-if="aiFeedback" class="bg-white border border-zinc-200 rounded p-3 text-xs text-zinc-700 whitespace-pre-wrap leading-relaxed relative">
+                            <button @click="aiFeedback = ''" class="absolute top-2 right-2 text-zinc-400 hover:text-zinc-900 font-bold">×</button>
+                            {{ aiFeedback }}
+                        </div>
+                    </div>
+
+                    <!-- Step 0: Fondasi -->
+                    <div v-if="currentStep === 0" class="space-y-4">
+                        <div>
+                            <h3 class="text-sm font-bold text-zinc-900 mb-1">Fondasi Dokumen</h3>
+                            <p class="text-xs text-zinc-500 mb-4">Mulai dengan mengimpor RPP lama atau biarkan AI membuat draf baru.</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-2 p-1 bg-zinc-100 rounded-lg border border-zinc-200">
+                            <button @click="importMode = 'pdf'" :class="importMode === 'pdf' ? 'bg-white text-zinc-950 font-medium shadow-sm' : 'text-zinc-500 hover:text-zinc-900'" class="py-1.5 text-xs rounded-md transition-all duration-150">Adaptasi RPP Lama</button>
+                            <button @click="importMode = 'generate'" :class="importMode === 'generate' ? 'bg-white text-zinc-950 font-medium shadow-sm' : 'text-zinc-500 hover:text-zinc-900'" class="py-1.5 text-xs rounded-md transition-all duration-150">Generator AI Baru</button>
+                        </div>
+
+                        <div v-if="importMode === 'pdf'" class="space-y-4 pt-2">
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-700 mb-1">Unggah PDF Asli</label>
+                                <input type="file" @change="handleFileUpload" accept="application/pdf" class="block w-full text-xs text-zinc-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-md file:border file:border-zinc-200 file:text-xs file:font-semibold file:bg-zinc-50 file:text-zinc-700 hover:file:bg-zinc-100 cursor-pointer">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-700 mb-1">Hasil Ekstraksi Teks</label>
+                                <textarea v-model="oldRppText" rows="6" class="w-full text-xs p-2.5 border border-zinc-200 rounded-md focus:border-zinc-950 focus:ring-0 outline-none" placeholder="Teks dari PDF akan terisi otomatis..."></textarea>
+                            </div>
+                            <button @click="parseOldRpp" :disabled="loading" class="w-full py-2 bg-zinc-950 text-white rounded-md text-xs font-semibold hover:bg-zinc-800 disabled:opacity-50 transition-all duration-150">
+                                {{ loading ? 'Mengekstrak...' : 'Ekstrak & Strukturkan via AI' }}
+                            </button>
+                        </div>
+
+                        <div v-if="importMode === 'generate'" class="space-y-4 pt-2">
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-zinc-700 mb-1">Topik Pembelajaran</label>
+                                    <input type="text" v-model="genTopic" placeholder="Contoh: Klasifikasi Gambar DL" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-zinc-700 mb-1">Kelas</label>
+                                    <select v-model="genClass" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none">
+                                        <option value="XI">Kelas XI</option>
+                                        <option value="XII">Kelas XII</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-700 mb-1">Alokasi Waktu</label>
+                                <select v-model="genJp" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none">
+                                    <option value="72 JP (Pertemuan 1 s.d. 18 @ 4 JP)">72 JP (1 Semester)</option>
+                                    <option value="144 JP (Pertemuan 1 s.d. 36 @ 4 JP)">144 JP (1 Tahun Ajaran)</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-xs font-semibold text-zinc-700 mb-1">Instruksi Khusus untuk AI Agent</label>
+                                <textarea v-model="agentGuideline" rows="3" class="w-full text-xs p-2.5 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none" placeholder="Contoh: Fokuskan integrasi Cinta Tanah Air menggunakan dataset dari BMKG..."></textarea>
+                            </div>
+                            <button @click="generateNewRpp" :disabled="loading" class="w-full py-2 bg-zinc-950 text-white rounded-md text-xs font-semibold hover:bg-zinc-800 disabled:opacity-50 transition-all duration-150">
+                                {{ loading ? 'Menyusun RPP...' : 'Buat RPP Baru via AI' }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 1: Metadata & 5NK -->
+                    <div v-if="currentStep === 1" class="space-y-4">
+                        <div class="border-b border-zinc-100 pb-2">
+                            <h3 class="text-sm font-bold text-zinc-900">A. Spesifikasi & Karakter 5NK</h3>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-700 mb-1">Satuan Pendidikan</label>
+                                <input type="text" v-model="state.spesifikasi.satuan_pendidikan" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-700 mb-1">Mata Pelajaran</label>
+                                <input type="text" v-model="state.spesifikasi.mata_pelajaran" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-700 mb-1">Kelas / Semester</label>
+                                <input type="text" v-model="state.spesifikasi.kelas_semester" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-700 mb-1">Topik Utama</label>
+                                <input type="text" v-model="state.spesifikasi.topik" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none">
+                            </div>
+                            <div class="col-span-2">
+                                <label class="block text-xs font-semibold text-zinc-700 mb-1">Alokasi Waktu</label>
+                                <input type="text" v-model="state.spesifikasi.alokasi_waktu" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none">
+                            </div>
+                        </div>
+
+                        <div class="border-t border-zinc-150 pt-4">
+                            <label class="block text-xs font-bold text-zinc-900 mb-2">Nilai Penguatan Karakter 5NK</label>
+                            <div class="grid grid-cols-5 gap-2 bg-zinc-50 p-3 rounded-lg border border-zinc-200">
+                                <label class="flex items-center space-x-1.5 text-xs text-zinc-700 cursor-pointer"><input type="checkbox" v-model="state.identifikasi.nilai_5nk.budi_luhur" class="rounded text-zinc-900 border-zinc-300 focus:ring-0"> <span>Budi Luhur</span></label>
+                                <label class="flex items-center space-x-1.5 text-xs text-zinc-700 cursor-pointer"><input type="checkbox" v-model="state.identifikasi.nilai_5nk.disiplin" class="rounded text-zinc-900 border-zinc-300 focus:ring-0"> <span>Disiplin</span></label>
+                                <label class="flex items-center space-x-1.5 text-xs text-zinc-700 cursor-pointer"><input type="checkbox" v-model="state.identifikasi.nilai_5nk.cinta_tanah_air" class="rounded text-zinc-900 border-zinc-300 focus:ring-0"> <span>Cinta Tanah Air</span></label>
+                                <label class="flex items-center space-x-1.5 text-xs text-zinc-700 cursor-pointer"><input type="checkbox" v-model="state.identifikasi.nilai_5nk.cerdas" class="rounded text-zinc-900 border-zinc-300 focus:ring-0"> <span>Cerdas</span></label>
+                                <label class="flex items-center space-x-1.5 text-xs text-zinc-700 cursor-pointer"><input type="checkbox" v-model="state.identifikasi.nilai_5nk.terampil" class="rounded text-zinc-900 border-zinc-300 focus:ring-0"> <span>Terampil</span></label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-zinc-700 mb-1">Indikator 5NK</label>
+                            <textarea v-model="state.identifikasi.indikator_5nk" rows="3" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none" placeholder="Deskripsikan penanaman nilai 5NK secara spesifik..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-zinc-700 mb-1">Materi Integrasi 5NK</label>
+                            <textarea v-model="state.identifikasi.materi_integrasi" rows="3" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none" placeholder="Tuliskan materi integrasi kontekstual kelokalan..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-zinc-700 mb-1">Asesmen Awal / Diagnostik</label>
+                            <textarea v-model="state.identifikasi.asesmen_awal" rows="3" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none" placeholder="Metode asesmen awal pembelajaran..."></textarea>
+                        </div>
+
+                        <div class="border-t border-zinc-150 pt-4">
+                            <label class="block text-xs font-bold text-zinc-900 mb-2">Dimensi Profil Lulusan (DPL)</label>
+                            <div class="grid grid-cols-4 gap-3 text-xs bg-zinc-50 p-3 rounded-lg border border-zinc-200">
+                                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="checkbox" v-model="state.identifikasi.dpl.dpl1" class="rounded text-zinc-900 border-zinc-300"> <span>Keimanan</span></label>
+                                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="checkbox" v-model="state.identifikasi.dpl.dpl2" class="rounded text-zinc-900 border-zinc-300"> <span>Kewargaan</span></label>
+                                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="checkbox" v-model="state.identifikasi.dpl.dpl3" class="rounded text-zinc-900 border-zinc-300"> <span>Penalaran</span></label>
+                                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="checkbox" v-model="state.identifikasi.dpl.dpl4" class="rounded text-zinc-900 border-zinc-300"> <span>Kreativitas</span></label>
+                                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="checkbox" v-model="state.identifikasi.dpl.dpl5" class="rounded text-zinc-900 border-zinc-300"> <span>Kolaborasi</span></label>
+                                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="checkbox" v-model="state.identifikasi.dpl.dpl6" class="rounded text-zinc-900 border-zinc-300"> <span>Kemandirian</span></label>
+                                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="checkbox" v-model="state.identifikasi.dpl.dpl7" class="rounded text-zinc-900 border-zinc-300"> <span>Kesehatan</span></label>
+                                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="checkbox" v-model="state.identifikasi.dpl.dpl8" class="rounded text-zinc-900 border-zinc-300"> <span>Komunikasi</span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Desain Pembelajaran & Pertemuan -->
+                    <div v-if="currentStep === 2" class="space-y-4">
+                        <div class="border-b border-zinc-100 pb-2">
+                            <h3 class="text-sm font-bold text-zinc-900">B. Desain Pembelajaran</h3>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-zinc-700 mb-1">Tujuan Pembelajaran (Satu baris satu tujuan)</label>
+                            <textarea :value="state.desain.tujuan_pembelajaran.join('\n')" @input="updateTujuan" rows="4" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none" placeholder="Tuliskan tujuan pembelajaran..."></textarea>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-700 mb-1">Model / Metode Pembelajaran</label>
+                                <input type="text" v-model="state.desain.metode" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-700 mb-1">Kemitraan DUDI</label>
+                                <input type="text" v-model="state.desain.kemitraan" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-700 mb-1">Lingkungan Kelas / Lab</label>
+                                <input type="text" v-model="state.desain.lingkungan" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-700 mb-1">Pemanfaatan Digital</label>
+                                <input type="text" v-model="state.desain.digital" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none">
+                            </div>
+                        </div>
+
+                        <!-- Pertemuan Detail -->
+                        <div class="border-t border-zinc-150 pt-4">
+                            <div class="flex justify-between items-center mb-3">
+                                <label class="block text-xs font-bold text-zinc-900">Rincian Pertemuan & Modul</label>
+                                <button @click="addPertemuan" class="text-[11px] font-semibold text-zinc-600 hover:text-zinc-950 border border-zinc-200 px-2 py-1 rounded shadow-sm bg-white">+ Tambah</button>
+                            </div>
+                            <div class="space-y-3">
+                                <div v-for="(p, i) in state.lampiran.pertemuan" :key="i" class="border border-zinc-200 p-4 rounded-lg bg-zinc-50 relative space-y-3">
+                                    <button @click="removePertemuan(i)" class="absolute top-2 right-2 text-xs text-zinc-400 hover:text-red-600 transition-all font-bold">×</button>
+                                    <div class="grid grid-cols-3 gap-2">
+                                        <div>
+                                            <label class="text-[10px] font-semibold text-zinc-500">Pertemuan Ke-</label>
+                                            <input type="text" v-model="p.no" class="w-full text-xs p-1.5 border border-zinc-200 rounded mt-0.5 bg-white">
+                                        </div>
+                                        <div>
+                                            <label class="text-[10px] font-semibold text-zinc-500">JP</label>
+                                            <input type="text" v-model="p.jp" class="w-full text-xs p-1.5 border border-zinc-200 rounded mt-0.5 bg-white">
+                                        </div>
+                                        <div>
+                                            <label class="text-[10px] font-semibold text-zinc-500">Materi Pokok</label>
+                                            <input type="text" v-model="p.materi" class="w-full text-xs p-1.5 border border-zinc-200 rounded mt-0.5 bg-white">
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div>
+                                            <label class="text-[10px] font-semibold text-zinc-500">Integrasi 5NK & DPL</label>
+                                            <textarea v-model="p.integrasi" rows="2" class="w-full text-xs p-1.5 border border-zinc-200 rounded mt-0.5 bg-white"></textarea>
+                                        </div>
+                                        <div>
+                                            <label class="text-[10px] font-semibold text-zinc-500">Aktivitas Utama</label>
+                                            <textarea v-model="p.aktivitas" rows="2" class="w-full text-xs p-1.5 border border-zinc-200 rounded mt-0.5 bg-white"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Pengalaman Belajar -->
+                    <div v-if="currentStep === 3" class="space-y-4">
+                        <div class="border-b border-zinc-100 pb-2">
+                            <h3 class="text-sm font-bold text-zinc-900">C. Pengalaman Belajar (Sintaks Pembelajaran)</h3>
+                        </div>
+                        <div>
+                            <!-- Fix 9: filter(t => t.trim()) to clean up experience input arrays -->
+                            <label class="block text-xs font-semibold text-zinc-700 mb-1">Kegiatan Pendahuluan (Satu baris satu poin)</label>
+                            <textarea :value="state.pengalaman.awal.join('\n')" @input="e => state.pengalaman.awal = e.target.value.split('\n').filter(t => t.trim())" rows="4" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none" placeholder="Aktivitas pembuka..."></textarea>
+                        </div>
+                        
+                        <div class="border-t border-zinc-150 pt-4 space-y-4">
+                            <span class="block text-xs font-bold text-zinc-900">Kegiatan Inti (Sintaks PBL/PjBL 5NK)</span>
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-600 mb-1">1. Memahami</label>
+                                <textarea :value="state.pengalaman.inti_memahami.join('\n')" @input="e => state.pengalaman.inti_memahami = e.target.value.split('\n').filter(t => t.trim())" rows="3" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-600 mb-1">2. Mengaplikasi</label>
+                                <textarea :value="state.pengalaman.inti_mengaplikasi.join('\n')" @input="e => state.pengalaman.inti_mengaplikasi = e.target.value.split('\n').filter(t => t.trim())" rows="3" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-600 mb-1">3. Merefleksi</label>
+                                <textarea :value="state.pengalaman.inti_merefleksi.join('\n')" @input="e => state.pengalaman.inti_merefleksi = e.target.value.split('\n').filter(t => t.trim())" rows="3" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-zinc-150 pt-4">
+                            <label class="block text-xs font-semibold text-zinc-700 mb-1">Kegiatan Penutup (Satu baris satu poin)</label>
+                            <textarea :value="state.pengalaman.penutup.join('\n')" @input="e => state.pengalaman.penutup = e.target.value.split('\n').filter(t => t.trim())" rows="4" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none" placeholder="Aktivitas penutup..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Lampiran & Rubrik -->
+                    <div v-if="currentStep === 4" class="space-y-4">
+                        <div class="border-b border-zinc-100 pb-2">
+                            <h3 class="text-sm font-bold text-zinc-900">D. Lampiran-Lampiran Asesmen & LKPD</h3>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-zinc-700 mb-1">Lampiran 1: Asesmen Diagnostik (Awal)</label>
+                            <textarea v-model="state.lampiran.l1_diagnostik" rows="5" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none font-mono"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-zinc-700 mb-1">Lampiran 2: Lembar Kerja Peserta Didik (LKPD)</label>
+                            <textarea v-model="state.lampiran.l2_lkpd" rows="5" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none font-mono"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-zinc-700 mb-1">Lampiran 3: Rubrik Asesmen Sumatif Proyek</label>
+                            <textarea v-model="state.lampiran.l3_rubrik" rows="5" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none font-mono"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-zinc-700 mb-1">Lampiran 4: Ringkasan Materi Pembelajaran</label>
+                            <textarea v-model="state.lampiran.l4_materi" rows="5" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none font-mono"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-zinc-700 mb-1">Lampiran 5: Bank Soal & Kunci Jawaban</label>
+                            <textarea v-model="state.lampiran.l5_soal" rows="5" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none font-mono"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Pengesahan & TTD -->
+                    <div v-if="currentStep === 5" class="space-y-4">
+                        <div class="border-b border-zinc-100 pb-2">
+                            <h3 class="text-sm font-bold text-zinc-900">E. Asesmen & Pengesahan</h3>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-700 mb-1">Asesmen Proses (Formatif)</label>
+                                <textarea v-model="state.asesmen.proses" rows="3" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-700 mb-1">Asesmen Akhir (Sumatif)</label>
+                                <textarea v-model="state.asesmen.akhir" rows="3" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-zinc-150 pt-4 space-y-3">
+                            <span class="block text-xs font-bold text-zinc-900">Otorisasi & Tanda Tangan</span>
+                            <div class="grid grid-cols-3 gap-2">
+                                <div>
+                                    <label class="text-xs font-semibold text-zinc-700">Tanggal Pengesahan</label>
+                                    <input type="text" v-model="state.signatures.tanggal" class="w-full text-xs p-2 border border-zinc-200 rounded-md mt-0.5 focus:border-zinc-950 outline-none">
+                                </div>
+                                <div>
+                                    <label class="text-xs font-semibold text-zinc-700">Nama Kepala Sekolah</label>
+                                    <input type="text" v-model="state.signatures.kepala_sekolah" class="w-full text-xs p-2 border border-zinc-200 rounded-md mt-0.5 focus:border-zinc-950 outline-none">
+                                </div>
+                                <div>
+                                    <label class="text-xs font-semibold text-zinc-700">Nama Guru Pengampu</label>
+                                    <input type="text" v-model="state.signatures.guru" class="w-full text-xs p-2 border border-zinc-200 rounded-md mt-0.5 focus:border-zinc-950 outline-none">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PDF Layout Settings -->
+                    <div class="mt-8 border-t border-zinc-200 pt-6">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-3">Settings Tampilan PDF & Tabel</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-semibold text-zinc-600 mb-1">Margin Halaman (mm)</label>
+                                <input type="number" v-model="pdfMargin" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none" title="Top/Bottom/Left/Right Margin in mm">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-zinc-600 mb-1">Padding Tabel Utama (px)</label>
+                                <input type="text" v-model="tablePadding" placeholder="misal: 14px 18px" class="w-full text-xs p-2 border border-zinc-200 rounded-md focus:border-zinc-950 outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Right Pane: Live Interactive Print Preview -->
+            <div class="w-1/2 bg-zinc-100 flex flex-col h-full overflow-hidden">
+                <div class="h-12 border-b border-zinc-200 bg-white flex items-center justify-between px-4 shrink-0">
+                    <div class="flex items-center space-x-2">
+                        <button @click="execDocCmd('bold')" title="Tebalkan (Ctrl+B)" class="p-1 hover:bg-zinc-100 rounded text-xs font-bold border border-zinc-200 px-2 py-0.5">B</button>
+                        <button @click="execDocCmd('italic')" title="Miringkan (Ctrl+I)" class="p-1 hover:bg-zinc-100 rounded text-xs italic border border-zinc-200 px-2 py-0.5">I</button>
+                        <button @click="execDocCmd('underline')" title="Garis Bawah (Ctrl+U)" class="p-1 hover:bg-zinc-100 rounded text-xs underline border border-zinc-200 px-2 py-0.5">U</button>
+                        <span class="h-4 w-[1px] bg-zinc-200 mx-1"></span>
+                        <button @click="insertTableAtDoc" title="Buat Tabel Baru" class="p-1 hover:bg-zinc-100 rounded text-[11px] border border-zinc-200 px-2 py-0.5 flex items-center space-x-1">
+                            <span>Tabel</span>
                         </button>
                     </div>
+                    <span class="text-[10px] text-zinc-500">Ketik langsung di lembar kerja</span>
                 </div>
-            </div>
-
-            <!-- Step 1: Spesifikasi & 5NK -->
-            <div v-if="currentStep === 1">
-                <div class="card">
-                    <h2 class="text-lg font-bold mb-4">A. Metadata & Identitas</h2>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="label-text">Satuan Pendidikan</label>
-                            <input type="text" v-model="state.spesifikasi.satuan_pendidikan">
-                        </div>
-                        <div>
-                            <label class="label-text">Mata Pelajaran</label>
-                            <input type="text" v-model="state.spesifikasi.mata_pelajaran">
-                        </div>
-                        <div>
-                            <label class="label-text">Kelas / Semester</label>
-                            <input type="text" v-model="state.spesifikasi.kelas_semester">
-                        </div>
-                        <div>
-                            <label class="label-text">Topik Utama</label>
-                            <input type="text" v-model="state.spesifikasi.topik">
-                        </div>
-                        <div class="col-span-2">
-                            <label class="label-text">Alokasi Waktu</label>
-                            <input type="text" v-model="state.spesifikasi.alokasi_waktu">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h2 class="text-lg font-bold mb-4">B. Nilai-Nilai 5NK (Karakter Kartika)</h2>
-                    <div class="grid grid-cols-5 gap-2 mb-4">
-                        <label class="flex items-center space-x-2 text-xs font-medium"><input type="checkbox" v-model="state.identifikasi.nilai_5nk.budi_luhur"> <span>Budi Luhur</span></label>
-                        <label class="flex items-center space-x-2 text-xs font-medium"><input type="checkbox" v-model="state.identifikasi.nilai_5nk.disiplin"> <span>Disiplin</span></label>
-                        <label class="flex items-center space-x-2 text-xs font-medium"><input type="checkbox" v-model="state.identifikasi.nilai_5nk.cinta_tanah_air"> <span>Cinta Tanah Air</span></label>
-                        <label class="flex items-center space-x-2 text-xs font-medium"><input type="checkbox" v-model="state.identifikasi.nilai_5nk.cerdas"> <span>Cerdas</span></label>
-                        <label class="flex items-center space-x-2 text-xs font-medium"><input type="checkbox" v-model="state.identifikasi.nilai_5nk.terampil"> <span>Terampil</span></label>
-                    </div>
-                    <div class="mb-4">
-                        <label class="label-text">Indikator 5NK</label>
-                        <textarea v-model="state.identifikasi.indikator_5nk" rows="2"></textarea>
-                    </div>
-                    <div>
-                        <label class="label-text">Materi Integrasi 5NK (Wajib)</label>
-                        <textarea v-model="state.identifikasi.materi_integrasi" rows="2"></textarea>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h2 class="text-lg font-bold mb-4">C. Dimensi Profil Lulusan</h2>
-                    <div class="grid grid-cols-4 gap-2 text-xs">
-                        <label class="flex items-center space-x-2"><input type="checkbox" v-model="state.identifikasi.dpl.dpl1"> <span>Keimanan</span></label>
-                        <label class="flex items-center space-x-2"><input type="checkbox" v-model="state.identifikasi.dpl.dpl2"> <span>Kewargaan</span></label>
-                        <label class="flex items-center space-x-2"><input type="checkbox" v-model="state.identifikasi.dpl.dpl3"> <span>Penalaran</span></label>
-                        <label class="flex items-center space-x-2"><input type="checkbox" v-model="state.identifikasi.dpl.dpl4"> <span>Kreativitas</span></label>
-                        <label class="flex items-center space-x-2"><input type="checkbox" v-model="state.identifikasi.dpl.dpl5"> <span>Kolaborasi</span></label>
-                        <label class="flex items-center space-x-2"><input type="checkbox" v-model="state.identifikasi.dpl.dpl6"> <span>Kemandirian</span></label>
-                        <label class="flex items-center space-x-2"><input type="checkbox" v-model="state.identifikasi.dpl.dpl7"> <span>Kesehatan</span></label>
-                        <label class="flex items-center space-x-2"><input type="checkbox" v-model="state.identifikasi.dpl.dpl8"> <span>Komunikasi</span></label>
+                <div class="flex-1 p-6 overflow-hidden flex justify-center items-start">
+                    <div class="w-full h-full bg-white border border-zinc-200 shadow-lg rounded-lg overflow-hidden flex flex-col">
+                        <!-- Fix 7: contenteditable frame edits synced back & Fix 3: fetch HTML dynamically from server to keep a single template -->
+                        <iframe ref="previewFrame" class="w-full h-full border-0 bg-white" @load="setupIframeEditable"></iframe>
                     </div>
                 </div>
             </div>
-
-            <!-- Step 2: Desain Pembelajaran -->
-            <div v-if="currentStep === 2">
-                <div class="card">
-                    <h2 class="text-lg font-bold mb-4">Tujuan Pembelajaran</h2>
-                    <textarea :value="state.desain.tujuan_pembelajaran.join('\n')" @input="updateTujuan" rows="4" placeholder="Satu baris satu tujuan pembelajaran..."></textarea>
-                </div>
-
-                <div class="card">
-                    <h2 class="text-lg font-bold mb-4">Faktor Desain</h2>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="label-text">Model Pembelajaran</label>
-                            <input type="text" v-model="state.desain.metode">
-                        </div>
-                        <div>
-                            <label class="label-text">Kemitraan DUDI</label>
-                            <input type="text" v-model="state.desain.kemitraan">
-                        </div>
-                        <div>
-                            <label class="label-text">Lingkungan Kelas / Lab</label>
-                            <input type="text" v-model="state.desain.lingkungan">
-                        </div>
-                        <div>
-                            <label class="label-text">Media & Alat Digital</label>
-                            <input type="text" v-model="state.desain.digital">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-bold">Rincian Pertemuan</h2>
-                        <button @click="addPertemuan" class="text-xs btn">+ Tambah Pertemuan</button>
-                    </div>
-                    <div class="space-y-4">
-                        <div v-for="(p, i) in state.lampiran.pertemuan" :key="i" class="border p-4 rounded-lg bg-zinc-50 relative">
-                            <button @click="removePertemuan(i)" class="absolute top-2 right-2 text-xs text-red-500 hover:font-bold">Hapus</button>
-                            <div class="grid grid-cols-3 gap-2 mb-2">
-                                <div>
-                                    <label class="text-xs font-semibold">No. Pertemuan</label>
-                                    <input type="text" v-model="p.no" class="mt-1">
-                                </div>
-                                <div>
-                                    <label class="text-xs font-semibold">Alokasi JP</label>
-                                    <input type="text" v-model="p.jp" class="mt-1">
-                                </div>
-                                <div>
-                                    <label class="text-xs font-semibold">Materi / Subtopik</label>
-                                    <input type="text" v-model="p.materi" class="mt-1">
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div>
-                                    <label class="text-xs font-semibold">Integrasi 5NK</label>
-                                    <textarea v-model="p.integrasi" rows="2" class="mt-1"></textarea>
-                                </div>
-                                <div>
-                                    <label class="text-xs font-semibold">Aktivitas Utama</label>
-                                    <textarea v-model="p.aktivitas" rows="2" class="mt-1"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 3: Pengalaman Belajar -->
-            <div v-if="currentStep === 3">
-                <div class="card">
-                    <h2 class="text-lg font-bold mb-4">Sintaks Pengalaman Belajar</h2>
-                    <div class="mb-4">
-                        <label class="label-text">Kegiatan Pendahuluan</label>
-                        <textarea :value="state.pengalaman.awal.join('\n')" @input="e => state.pengalaman.awal = e.target.value.split('\n')" rows="3"></textarea>
-                    </div>
-                    
-                    <div class="border-t my-4 pt-4">
-                        <h3 class="font-bold text-sm mb-3">Kegiatan Inti</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="label-text">Fase 1: Memahami</label>
-                                <textarea :value="state.pengalaman.inti_memahami.join('\n')" @input="e => state.pengalaman.inti_memahami = e.target.value.split('\n')" rows="3"></textarea>
-                            </div>
-                            <div>
-                                <label class="label-text">Fase 2: Mengaplikasi</label>
-                                <textarea :value="state.pengalaman.inti_mengaplikasi.join('\n')" @input="e => state.pengalaman.inti_mengaplikasi = e.target.value.split('\n')" rows="3"></textarea>
-                            </div>
-                            <div>
-                                <label class="label-text">Fase 3: Merefleksi</label>
-                                <textarea :value="state.pengalaman.inti_merefleksi.join('\n')" @input="e => state.pengalaman.inti_merefleksi = e.target.value.split('\n')" rows="3"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="border-t my-4 pt-4">
-                        <label class="label-text">Kegiatan Penutup</label>
-                        <textarea :value="state.pengalaman.penutup.join('\n')" @input="e => state.pengalaman.penutup = e.target.value.split('\n')" rows="3"></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 4: Lampiran -->
-            <div v-if="currentStep === 4" class="space-y-6">
-                <div class="card">
-                    <h2 class="text-lg font-bold mb-2">L1: Asesmen Diagnostik</h2>
-                    <textarea v-model="state.lampiran.l1_diagnostik" rows="4"></textarea>
-                </div>
-                <div class="card">
-                    <h2 class="text-lg font-bold mb-2">L2: LKPD</h2>
-                    <textarea v-model="state.lampiran.l2_lkpd" rows="4"></textarea>
-                </div>
-                <div class="card">
-                    <h2 class="text-lg font-bold mb-2">L3: Rubrik Asesmen</h2>
-                    <textarea v-model="state.lampiran.l3_rubrik" rows="4"></textarea>
-                </div>
-                <div class="card">
-                    <h2 class="text-lg font-bold mb-2">L4: Ringkasan Materi</h2>
-                    <textarea v-model="state.lampiran.l4_materi" rows="4"></textarea>
-                </div>
-                <div class="card">
-                    <h2 class="text-lg font-bold mb-2">L5: Bank Soal & Kunci Jawaban</h2>
-                    <textarea v-model="state.lampiran.l5_soal" rows="4"></textarea>
-                </div>
-            </div>
-
-            <!-- Step 5: Cetak PDF -->
-            <div v-if="currentStep === 5">
-                <div class="card">
-                    <h2 class="text-lg font-bold mb-4">Tanda Tangan Pengesahan</h2>
-                    <div class="grid grid-cols-3 gap-4 mb-6">
-                        <div>
-                            <label class="label-text">Tempat, Tanggal</label>
-                            <input type="text" v-model="state.signatures.tanggal">
-                        </div>
-                        <div>
-                            <label class="label-text">Kepala Sekolah</label>
-                            <input type="text" v-model="state.signatures.kepala_sekolah">
-                        </div>
-                        <div>
-                            <label class="label-text">Guru Pengampu</label>
-                            <input type="text" v-model="state.signatures.guru">
-                        </div>
-                    </div>
-                    
-                    <button @click="downloadPdf" class="btn w-full py-3 text-center text-sm font-semibold">
-                        🖨️ Cetak PDF Resmi (Times New Roman 12px)
-                    </button>
-                </div>
-            </div>
-
         </div>
     </div>
 
@@ -345,47 +419,135 @@
         createApp({
             data() {
                 return {
+                    // Unique session ID for each client session (Fix 1)
+                    sessionId: localStorage.getItem('rpp_session_id') || (() => {
+                        const id = Math.random().toString(36).substring(2, 15);
+                        localStorage.setItem('rpp_session_id', id);
+                        return id;
+                    })(),
                     steps: [
-                        "1. Import RPP", 
+                        "1. Fondasi", 
                         "2. Metadata & 5NK", 
-                        "3. Desain Pembelajaran", 
-                        "4. Pengalaman Belajar", 
-                        "5. Lampiran & Rubrik", 
-                        "6. Download PDF"
+                        "3. Desain & Rincian", 
+                        "4. Pengalaman", 
+                        "5. Lampiran", 
+                        "6. Pengesahan"
                     ],
                     currentStep: 0,
                     importMode: "pdf",
                     loading: false,
                     improving: false,
+                    loadingPdf: false,
                     aiFeedback: "",
                     oldRppText: "",
                     genTopic: "",
                     genClass: "XI",
                     genJp: "72 JP (Pertemuan 1 s.d. 18 @ 4 JP)",
+                    pdfMargin: 20,
+                    tablePadding: "14px 18px",
+                    agentGuideline: "",
+                    aiAssistantGuideline: "",
+                    selectedModel: "ag/gemini-3.1-pro-low",
                     state: {
                         spesifikasi: {},
                         identifikasi: { nilai_5nk: {}, dpl: {} },
                         desain: { tujuan_pembelajaran: [] },
                         pengalaman: { awal: [], inti_memahami: [], inti_mengaplikasi: [], inti_merefleksi: [], penutup: [] },
                         signatures: {},
+                        asesmen: {},
                         lampiran: { pertemuan: [] }
-                    }
+                    },
+                    iframeLoaded: false
                 }
+            },
+            watch: {
+                // Fix 3: when state or config changes, render fresh HTML from backend instead of client-side logic duplication
+                state: {
+                    handler() { this.renderPreview(); },
+                    deep: true
+                },
+                pdfMargin() { this.renderPreview(); },
+                tablePadding() { this.renderPreview(); }
             },
             mounted() {
                 this.loadState();
             },
             methods: {
                 async loadState() {
-                    const res = await fetch('/api/state');
+                    const res = await fetch('/api/state', {
+                        headers: { 'x-session-id': this.sessionId }
+                    });
                     this.state = await res.json();
                 },
                 async saveState() {
                     await fetch('/api/state', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'x-session-id': this.sessionId
+                        },
                         body: JSON.stringify(this.state)
                     });
+                },
+                async renderPreview() {
+                    if (!this.iframeLoaded) return;
+                    try {
+                        const res = await fetch('/api/render', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                state: this.state,
+                                config: { padding: this.tablePadding }
+                            })
+                        });
+                        const data = await res.json();
+                        const doc = this.$refs.previewFrame.contentDocument;
+                        
+                        // Keep track of cursor / edit state if needed, or simply replace body to avoid full reloads
+                        doc.open();
+                        doc.write(data.html);
+                        doc.close();
+                        doc.body.contentEditable = true;
+                        doc.body.style.outline = 'none';
+                        doc.body.style.padding = this.pdfMargin + 'mm'; // using mm for margin visualization consistency
+                        doc.body.style.width = '210mm';
+                        doc.body.style.margin = '0 auto';
+                        doc.body.style.boxSizing = 'border-box';
+                        
+                        // Add page boundary lines for visual cuts
+                        const styleEl = doc.createElement('style');
+                        styleEl.innerHTML = `
+                            /* Visual helper lines for printing bounds */
+                            @media screen {
+                                .page-break {
+                                    border-top: 1px dashed red;
+                                    margin: 30px 0;
+                                    position: relative;
+                                    height: 1px;
+                                }
+                                .page-break::after {
+                                    content: 'Gunting Halaman / Page Break';
+                                    position: absolute;
+                                    top: -12px;
+                                    right: 10px;
+                                    background: #ffebeb;
+                                    color: red;
+                                    font-size: 9px;
+                                    padding: 2px 6px;
+                                    font-family: sans-serif;
+                                    border: 1px solid red;
+                                    border-radius: 3px;
+                                }
+                            }
+                        `;
+                        doc.head.appendChild(styleEl);
+                    } catch (e) {
+                        console.error("Failed to render live preview:", e);
+                    }
+                },
+                setupIframeEditable() {
+                    this.iframeLoaded = true;
+                    this.renderPreview();
                 },
                 updateTujuan(e) {
                     this.state.desain.tujuan_pembelajaran = e.target.value.split('\n').filter(t => t.trim());
@@ -422,8 +584,11 @@
                     try {
                         const res = await fetch('/api/parse', {
                             method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ text: this.oldRppText })
+                            headers: { 
+                                'Content-Type': 'application/json',
+                                'x-session-id': this.sessionId
+                            },
+                            body: JSON.stringify({ text: this.oldRppText, model: this.selectedModel })
                         });
                         const data = await res.json();
                         this.state = data.data;
@@ -439,11 +604,16 @@
                     try {
                         const res = await fetch('/api/generate', {
                             method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
+                            headers: { 
+                                'Content-Type': 'application/json',
+                                'x-session-id': this.sessionId
+                            },
                             body: JSON.stringify({
                                 topic: this.genTopic,
                                 classLevel: this.genClass,
-                                totalJp: this.genJp
+                                totalJp: this.genJp,
+                                guideline: this.agentGuideline,
+                                model: this.selectedModel
                             })
                         });
                         const data = await res.json();
@@ -454,24 +624,61 @@
                     }
                     this.loading = false;
                 },
-                async downloadPdf() {
-                    await this.saveState();
-                    // Gunakan form submission POST tersembunyi untuk fetch binary dan download
-                    const response = await fetch('/api/export', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(this.state)
-                    });
-                    if (response.ok) {
-                        const blob = await response.blob();
-                        const link = document.createElement('a');
-                        link.href = window.URL.createObjectURL(blob);
-                        link.download = "RPP_5NK_Resmi.pdf";
-                        link.click();
-                    } else {
-                        const err = await response.json();
-                        alert("Gagal cetak PDF: " + err.error);
+                execDocCmd(cmd, val = null) {
+                    const doc = this.$refs.previewFrame.contentDocument;
+                    doc.execCommand(cmd, false, val);
+                },
+                insertTableAtDoc() {
+                    const rows = prompt("Masukkan jumlah baris:", "3");
+                    const cols = prompt("Masukkan jumlah kolom:", "3");
+                    if (!rows || !cols) return;
+                    
+                    let tableHtml = '<table style="width:100%; border-collapse:collapse; margin-top:10px; font-size:11px;">';
+                    
+                    // Header row
+                    tableHtml += '<tr style="background-color:#e0e0e0; font-weight:bold;">';
+                    for(let c = 0; c < cols; c++) {
+                        tableHtml += '<th style="border:1px solid #000; padding:8px 10px;">Header ' + (c+1) + '</th>';
                     }
+                    tableHtml += '</tr>';
+                    
+                    // Body rows
+                    for(let r = 0; r < rows; r++) {
+                        tableHtml += '<tr>';
+                        for(let c = 0; c < cols; c++) {
+                            tableHtml += '<td style="border:1px solid #000; padding:8px 10px;">Data</td>';
+                        }
+                        tableHtml += '</tr>';
+                    }
+                    tableHtml += '</table><br>';
+                    
+                    const doc = this.$refs.previewFrame.contentDocument;
+                    doc.execCommand('insertHTML', false, tableHtml);
+                },
+                async downloadPdf() {
+                    this.loadingPdf = true;
+                    await this.saveState();
+                    const iframeBody = this.$refs.previewFrame.contentDocument.documentElement.outerHTML;
+                    try {
+                        const response = await fetch('/api/export_direct', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ html: iframeBody, config: { margin: this.pdfMargin } })
+                        });
+                        if (response.ok) {
+                            const blob = await response.blob();
+                            const link = document.createElement('a');
+                            link.href = window.URL.createObjectURL(blob);
+                            link.download = "RPP_5NK_Resmi.pdf";
+                            link.click();
+                        } else {
+                            const err = await response.json();
+                            alert("Gagal cetak PDF: " + err.error);
+                        }
+                    } catch (e) {
+                        alert("Gagal download PDF: " + e.message);
+                    }
+                    this.loadingPdf = false;
                 },
                 async triggerImprove(actionType) {
                     await this.saveState();
@@ -480,8 +687,11 @@
                     try {
                         const res = await fetch('/api/improve', {
                             method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ actionType })
+                            headers: { 
+                                'Content-Type': 'application/json',
+                                'x-session-id': this.sessionId
+                            },
+                            body: JSON.stringify({ actionType, guideline: this.aiAssistantGuideline, model: this.selectedModel })
                         });
                         const data = await res.json();
                         if (data.error) {

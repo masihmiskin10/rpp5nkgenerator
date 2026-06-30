@@ -1,224 +1,326 @@
-
-    <html>
-    <head>
-        <style>
-            body { font-family: "Times New Roman", Times, serif; font-size: 12px; line-height: 1.25; color: #000; margin: 40px; }
-            h1, h2, h3, h4 { text-align: center; color: #000; font-weight: bold; margin: 10px 0; }
-            table { width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 12px; }
-            tr { page-break-inside: avoid; }
-            th, td { border: 1px solid #000; padding: 12px 14px; vertical-align: top; }
-            .bg-gray { background-color: #f2f2f2; font-weight: bold; }
-            .page-break { page-break-before: always; }
-            .signature-table { width: 100%; border: none; margin-top: 50px; }
-            .signature-table td { border: none; padding: 0; width: 50%; }
-            .pre-text { white-space: pre-wrap; font-family: "Times New Roman", Times, serif; font-size: 12px; line-height: 1.3; }
-        </style>
-    </head>
-    <body>
-        <h2>RENCANA PELAKSANAAN PEMBELAJARAN (RPP)<br>TERINTEGRASI 5 NILAI KARTIKA (5NK)</h2>
-        <table>
-            <tr class="bg-gray"><td width="5%"><b>A</b></td><td width="30%"><b>Spesifikasi</b></td><td></td></tr>
-            <tr><td>1</td><td>Satuan Pendidikan</td><td>SMK Kartika X-1</td></tr>
-            <tr><td>2</td><td>Mata Pelajaran</td><td>Keamanan Jaringan (Konsentrasi Keahlian TKJ)</td></tr>
-            <tr><td>3</td><td>Kelas / Semester</td><td>XII TKJ / Ganjil</td></tr>
-            <tr><td>4</td><td>Topik Pembelajaran</td><td>Keamanan Jaringan</td></tr>
-            <tr><td>5</td><td>Alokasi Waktu</td><td>32 x 45 menit (8 Pertemuan)</td></tr>
-        </table>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: "Times New Roman", Times, serif; font-size: 12px; line-height: 1.35; color: #000; }
+        h1, h2, h3 { text-align: center; color: #000; margin-top: 18px; margin-bottom: 12px; font-weight: bold; }
+        h4 { color: #000; margin-top: 15px; margin-bottom: 6px; font-weight: bold; }
         
-        <table>
-            <tr class="bg-gray"><td width="5%"><b>B</b></td><td width="30%"><b>Identifikasi</b></td><td></td></tr>
-            <tr><td>1</td><td>Asesmen Diagnostik / Awal</td><td>Tes kognitif awal mengenai konsep dasar jaringan komputer, port, protokol, dan model OSI.</td></tr>
-            <tr><td>2</td><td>Dimensi Profil Lulusan</td><td>
-                [&radic;] DPL 1 Keimanan<br>
+        table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 12px; } tr { page-break-inside: avoid; }
+        th, td { border: 1px solid #000; padding: 14px 18px; vertical-align: top; }
+        
+        .bg-gray { background-color: #e0e0e0; font-weight: bold; }
+        .text-blue { color: #0000ff; }
+        .text-italic { font-style: italic; }
+        .page-break { page-break-before: always; }
+        
+        .signature-container { width: 100%; margin-top: 40px; }
+        .signature-table { width: 100%; border: none; }
+        .signature-table td { border: none; padding: 0; width: 50%; vertical-align: top; }
+        .tight-table td { padding: 6px 10px; }
+        
+        ul, ol { margin-top: 2px; padding-left: 20px; margin-bottom: 2px; }
+        p { margin-top: 2px; margin-bottom: 2px; }
+        .box { border: 1px solid #000; padding: 10px; margin-bottom: 15px; background-color: #f9f9f9; }
+        .code-block { font-family: monospace; background-color: #f1f1f1; padding: 6px; border: 1px solid #ccc; display: block; white-space: pre-wrap; font-size: 11px; margin-top: 4px; }
+    </style>
+</head>
+<body>
+
+    <h2 style="font-size: 14px; text-transform: uppercase;">RENCANA PELAKSANAAN PEMBELAJARAN (RPP) MENDALAM TERINTEGRASI 5NK<br>UNTUK TINGKAT SMK</h2>
+
+    <!-- SECTION A -->
+    <table class="tight-table">
+        <tr class="bg-gray">
+            <td width="5%"><b>A</b></td>
+            <td width="30%"><b>Spesifikasi</b></td>
+            <td></td>
+        </tr>
+        <tr><td>1</td><td>Satuan Pendidikan</td><td>SMK Kartika X-1</td></tr>
+        <tr><td>2</td><td>Mata Pelajaran</td><td>Administrasi Infrastruktur Jaringan</td></tr>
+        <tr><td>3</td><td>Kelas / Semester</td><td>XI TKJ / Fase F</td></tr>
+        <tr><td>4</td><td>Topik Pembelajaran</td><td>Administrasi Infrastruktur Jaringan (VLAN, Routing Statis, Routing Dinamis OSPF, Firewall NAT & Filtering, Network Monitoring & Proxy)</td></tr>
+        <tr><td>5</td><td>Alokasi Waktu</td><td>32 x 45 menit (8 Pertemuan)</td></tr>
+    </table>
+
+    <!-- SECTION B -->
+    <table>
+        <tr class="bg-gray">
+            <td width="5%"><b>B</b></td>
+            <td width="30%"><b>Identifikasi</b></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Asesmen Diagnostik/ Awal Pembelajaran</td>
+            <td>Siswa mengisi instrumen Kognitif (esai logika topologi subnetting) dan Non-Kognitif (ketersediaan perangkat, minat belajar) pada awal pembelajaran.</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Dimensi Profil Lulusan</td>
+            <td>
+                [&radic;] DPL 1 Keimanan dan Ketakwaan kepada Tuhan YME<br>
                 [&radic;] DPL 2 Kewargaan<br>
-                [&radic;] DPL 3 Penalaran Critis<br>
+                [&radic;] DPL 3 Penalaran Kritis<br>
                 [&radic;] DPL 4 Kreativitas<br>
                 [&radic;] DPL 5 Kolaborasi<br>
                 [&radic;] DPL 6 Kemandirian<br>
                 [&radic;] DPL 7 Kesehatan<br>
                 [&radic;] DPL 8 Komunikasi
-            </td></tr>
-            <tr><td>3</td><td>Penguatan Karakter 5NK</td><td>
+            </td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Penguatan Karakter 5NK</td>
+            <td>
                 [&radic;] Berbudi Luhur<br>
                 [&radic;] Disiplin<br>
                 [&radic;] Cinta Tanah Air<br>
                 [&radic;] Cerdas<br>
                 [&radic;] Terampil
-            </td></tr>
-            <tr><td>4</td><td>Indikator 5NK</td><td>Disiplin mematuhi Kebijakan Penggunaan Jaringan, Cerdas menganalisis log anomali dan celah keamanan secara kritis, Terampil mengonfigurasi perangkat pertahanan server, Budi Luhur menjaga privasi data pengguna, Cinta Tanah Air mengamankan infrastruktur digital sekolah sebagai wujud bela negara.</td></tr>
-            <tr><td>5</td><td>Materi Integrasi 5NK</td><td>Penyusunan Kebijakan Penggunaan Jaringan (KPJ) untuk infrastruktur sekolah.</td></tr>
-        </table>
+            </td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Indikator 5NK</td>
+            <td>Budi Luhur (jujur laporkan hasil uji, gotong royong troubleshooting). Disiplin (hadir tepat waktu, patuh SOP K3 lab). Cinta Tanah Air (jaga kedaulatan digital, amankan siber nasional). Cerdas (analisis rute efisien, desain IP tepat). Terampil (konfigurasi CLI cepat, tepat standar industri).</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>Materi Integrasi 5NK</td>
+            <td>Rancang bangun topologi teaching factory (TEFA) backbone aman instansi pemerintah RI.</td>
+        </tr>
+    </table>
 
-        <div class="page-break"></div>
-        <table>
-            <tr class="bg-gray"><td width="5%"><b>C</b></td><td colspan="2"><b>Desain Pembelajaran</b></td></tr>
-            <tr><td>1</td><td width="25%">Tujuan Pembelajaran</td><td>- Merumuskan Kebijakan Penggunaan Jaringan (KPJ) dan menganalisis jenis ancaman jaringan.<br>- Mengonfigurasi Stateful Firewall (IPTables/UFW) pada host dan server Linux.<br>- Menerapkan Port Knocking untuk mengamankan port administratif (SSH).<br>- Mengonfigurasi Server Autentikasi terpusat menggunakan RADIUS/AAA.<br>- Menginstalasi dan menguji Intrusion Detection System (IDS) menggunakan Snort.<br>- Melakukan Hardening Layanan Server (SSL/TLS pada Web Server dan Secure SSH).<br>- Mengamankan komunikasi data dengan teknik Kriptografi (Asimetris/Simetris).<br>- Membangun Virtual Private Network (VPN) dengan OpenVPN/IPsec untuk akses remote aman.</td></tr>
-            <tr><td>2</td><td>Kerangka Pembelajaran</td><td>
-                <b>a. Model:</b> Project Based Learning (PjBL) + TEFA (Teaching Factory)<br>
-                <b>b. Kemitraan:</b> Industri Network Security / ISP (Mitra TEFA)<br>
-                <b>c. Lingkungan:</b> Lab Komputer Jaringan / Lab Server Keamanan<br>
-                <b>d. Digital:</b> VirtualBox/VMware, Debian/Ubuntu Server, Kali Linux, Wireshark, Snort, OpenVPN, LKPD digital
-            </td></tr>
-        </table>
+    <div class="page-break"></div>
 
-        <table>
-            <tr class="bg-gray"><td width="5%"><b>D</b></td><td colspan="2"><b>Pengalaman Belajar</b></td></tr>
-            <tr><td>1</td><td colspan="2"><b>Kegiatan Awal:</b><br>- Guru memaparkan studi kasus nyata tentang kebocoran data akibat kata sandi lemah.<br>- Guru mengajukan pertanyaan pemantik mengenai analogi keamanan fisik dan digital.<br>- Guru mereview materi prasyarat mengenai dasar-dasar port dan protokol jaringan.</td></tr>
-            <tr><td rowspan="3">2</td><td width="15%" class="bg-gray">Memahami</td><td>Siswa mempelajari konsep CIA Triad (Confidentiality, Integrity, Availability), AAA, dan anatomi serangan.<br>Siswa memahami konsep firewall layer 3 dan 4, stateful packet inspection, serta default policy (DROP vs ACCEPT).<br>Siswa memahami mekanisme kerja daemon port knocking (knockd) yang mendengarkan log firewall untuk mendeteksi pola ketukan.<br>Siswa memahami konsep AAA (Authentication, Authorization, Accounting) dan protokol autentikasi terpusat RADIUS & TACACS+.<br>Siswa memahami perbedaan IDS (mendeteksi & mencatat log) dan IPS (mendeteksi & memblokir secara aktif), serta deteksi berbasis Signature vs Anomaly.<br>Siswa memahami kelemahan protokol SSH v1, otentikasi password polos, serta enkripsi SSL/TLS pada web server Apache/Nginx.<br>Siswa memahami perbedaan Kriptografi Simetris (kunci sama, misal AES) dan Asimetris (kunci publik & privat, misal RSA).<br>Siswa memahami cara kerja Virtual Private Network (VPN) dan protokol enkripsi jalur data (OpenVPN/IPsec).</td></tr>
-            <tr><td class="bg-gray">Mengaplikasi</td><td>Kelompok siswa merancang draf Kebijakan Penggunaan Jaringan (KPJ) sekolah dan menggunakan Wireshark untuk menganalisis plaintext password yang bocor (sniffing).<br>Siswa mengonfigurasi IPTables di Linux Debian Server untuk mengizinkan hanya port tertentu (SSH, HTTP) dan menutup port lainnya.<br>Siswa menginstalasi knockd pada server Debian dan menetapkan sequence ketukan port (7000, 8000, 9000) untuk membuka port SSH.<br>Siswa membangun server FreeRADIUS terintegrasi dengan MikroTik/Cisco Switch dan mengonfigurasi user pada file users.<br>Siswa mengonfigurasi rule kustom di IDS Snort pada Debian Server untuk mendeteksi serangan ICMP Flood.<br>Siswa melakukan hardening SSH (menonaktifkan root login, ubah port default, pasang SSH Key-Pair) dan membuat Self-Signed Certificate SSL untuk HTTPS Apache/Nginx.<br>Siswa mengonfigurasi komunikasi data aman dengan teknik kriptografi simetris/asimetris.<br>Siswa mengonfigurasi dan membangun terowongan VPN menggunakan OpenVPN/IPsec pada server.</td></tr>
-            <tr><td class="bg-gray">Merefleksi</td><td>Siswa mendiskusikan kerawanan pengiriman data tanpa enkripsi dan pentingnya kebijakan akses ketat (Least Privilege).<br>Siswa melakukan pemindaian port menggunakan Nmap dari Kali Linux untuk memverifikasi efektivitas rule IPTables yang dipasang.<br>Siswa mempraktikkan pengetukan port dari client Linux dan memantau terbuatnya dynamic rules iptables secara otomatis.<br>Siswa melacak log login (accounting) pada server RADIUS untuk mengaudit akses administrator perangkat jaringan.<br>Siswa menguji serangan ping flood dari client dan memantau alert yang terpicu secara real-time pada log Snort.<br>Siswa membandingkan keandalan login SSH berbasis kunci privat dengan login berbasis password konvensional.<br>Siswa menganalisis integritas data hasil enkripsi sebelum dan setelah ditransmisikan melalui jaringan.<br>Siswa memverifikasi enkripsi paket VPN melalui Wireshark untuk membuktikan kerahasiaan data terowongan transmisi.</td></tr>
-            <tr><td>3</td><td colspan="2"><b>Kegiatan Penutup:</b><br>- Siswa menuliskan exit ticket berisi perbedaan mendasar antara vulnerability dan exploit.<br>- Guru menekankan pentingnya firewall host sebagai gardu pertahanan pertama server.<br>- Siswa berdiskusi tentang kegunaan port knocking dalam mencegah serangan brute force SSH secara masif.<br>- Guru mengevaluasi perbandingan tingkat keamanan database lokal vs database terpusat (RADIUS/LDAP).<br>- Guru menjelaskan tantangan zero-day attack yang tidak terdeteksi oleh signature-based IDS.<br>- Guru mereview pentingnya sertifikat digital CA (Certificate Authority) di industri global.<br>- Siswa menyimpulkan kelemahan taktis dari metode kriptografi simetris jika kunci bocor.<br>- Guru dan siswa mengevaluasi keandalan fungsional konektivitas VPN dalam skenario remote working.</td></tr>
-        </table>
+    <!-- SECTION C -->
+    <table>
+        <tr class="bg-gray">
+            <td width="5%"><b>C</b></td>
+            <td colspan="2"><b>Desain Pembelajaran</b></td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td width="25%">Tujuan Pembelajaran</td>
+            <td>
+                <ol>
+                    <li>Mengonfigurasi VLAN dan Inter-VLAN Routing sesuai SOP.</li><li>Mengonfigurasi Routing Statis redundan (failover) untuk stabilitas.</li><li>Mengonfigurasi Routing Dinamis OSPF single/multi-area secara efisien.</li><li>Menerapkan Firewall NAT (PAT & Port Forwarding) pengamanan IP lokal.</li><li>Mengonfigurasi IP Filtering ACL pembatasan hak akses client.</li><li>Mengonfigurasi Proxy Server filter konten berbahaya.</li><li>Menggunakan Network Monitoring (SNMP & Syslog) pantau traffic.</li><li>Melakukan troubleshooting terintegrasi secara mandiri dan kelompok.</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Kerangka Pembelajaran</td>
+            <td>
+                <b>a. Praktik Pedagogis</b><br>
+                1) Model Pembelajaran: <span class="text-blue">Project Based Learning (PjBL) + TEFA (Teaching Factory)</span><br><br>
+                
+                <b>b. Kemitraan pembelajaran:</b><br>
+                <span class="text-blue">PT Telekomunikasi Indonesia / Cisco Academy / MikroTik Academy</span><br><br>
+                
+                <b>c. Lingkungan Pembelajaran</b><br>
+                <span class="text-blue">Lab Komputer Jaringan SMK Kartika X-1 (PC Klien, Switch Manageable Cisco, Routerboard MikroTik)</span><br><br>
+                
+                <b>d. Pemanfaatan Digital:</b><br>
+                <span class="text-blue">Cisco Packet Tracer 8.2+ / GNS3, Winbox, RouterOS</span>
+            </td>
+        </tr>
+    </table>
+    
+    <!-- SECTION D -->
+    <table style="margin-bottom: 0px;">
+        <tr class="bg-gray">
+            <td width="5%"><b>D</b></td>
+            <td colspan="2"><b>Pengalaman Belajar</b></td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td colspan="2">
+                <b>Kegiatan Awal</b><br>
+                <ul><li>Guru pimpin doa (Budi Luhur), presensi tepat waktu (Disiplin).</li><li>Guru jelaskan pentingnya kedaulatan digital NKRI (Cinta Tanah Air).</li><li>Siswa kerjakan asesmen diagnostik kognitif/non-kognitif.</li></ul>
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="3">2</td>
+            <td width="15%" class="bg-gray" style="text-align: center; vertical-align: middle;"><b>Memahami</b></td>
+            <td><ul><li>Guru paparkan konsep VLAN, OSPF, NAT, ACL, Proxy, SNMP.</li><li>Siswa analisis studi kasus topologi TEFA secara logis (Cerdas).</li><li>Siswa diskusikan pembagian tugas kelompok secara adil (Budi Luhur).</li></ul></td>
+        </tr>
+        <tr>
+            <td class="bg-gray" style="text-align: center; vertical-align: middle;"><b>Mengaplikasi</b></td>
+            <td><ul><li>Siswa bangun topologi fisik/virtual patuhi SOP (Disiplin, Terampil).</li><li>Siswa konfigurasi CLI switch/router dengan teliti (Terampil).</li><li>Siswa terapkan firewall amankan jaringan lokal (Cinta Tanah Air).</li></ul></td>
+        </tr>
+        <tr>
+            <td class="bg-gray" style="text-align: center; vertical-align: middle;"><b>Merefleksi</b></td>
+            <td><ul><li>Siswa uji fungsionalitas dan failover link bersama kelompok (Cerdas).</li><li>Siswa presentasikan hasil kerja dan laporkan bug apa adanya (Budi Luhur).</li><li>Guru beri umpan balik perbaikan konfigurasi.</li></ul></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td colspan="2">
+                <b>Kegiatan Penutup</b><br>
+                <ul><li>Siswa rapikan lab dan matikan perangkat sesuai SOP (Disiplin).</li><li>Siswa isi exit ticket evaluasi diri.</li><li>Doa penutup (Budi Luhur).</li></ul>
+            </td>
+        </tr>
+    </table>
 
-        <table>
-            <tr class="bg-gray"><td width="5%"><b>E</b></td><td width="30%"><b>Asesmen</b></td><td></td></tr>
-            <tr><td>1</td><td>Proses</td><td>Observasi kinerja konfigurasi keamanan server, analisis keaktifan diskusi, dan laporan analisis log IDS/firewall.</td></tr>
-            <tr><td>2</td><td>Akhir</td><td>Penilaian proyek akhir (konfigurasi keamanan terintegrasi), pengerjaan LKPD, dan tes tertulis akhir unit.</td></tr>
-        </table>
+    <!-- SECTION E & SIGNATURES -->
+    <table style="margin-top: 15px; margin-bottom: 15px;">
+        <tr class="bg-gray">
+            <td width="5%"><b>E</b></td>
+            <td width="30%"><b>Assesmen Pembelajaran</b></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Assesmen Proses</td>
+            <td>Observasi disiplin SOP, checklist unjuk kerja konfigurasi, penilaian sikap kolaborasi (Budi Luhur).</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Assesmen Akhir</td>
+            <td>Uji fungsionalitas topologi terintegrasi, laporan proyek TEFA, nilai evaluasi tertulis.
 
-        <table class="signature-table">
+
+</td>
+        </tr>
+    </table>
+
+    <!-- SIGNATURE BLOCK -->
+    <div class="signature-container" style="margin-top: 30px;">
+        <table style="width: 100%; border: none; margin-top: 10px;">
             <tr>
-                <td>Mengetahui,<br>Kepala Sekolah SMK Kartika X-1<br><br><br><br><b>M. Hidayatullah, S.Kom</b></td>
-                <td>Guru Mata Pelajaran<br><br><br><br><b>Allan Parindera, S.Kom</b></td>
+                <td style="border: none; width: 50%; padding: 0;"></td>
+                <td style="border: none; width: 50%; padding: 0; text-align: center;">
+                    Jakarta, 6 Juli 2026<br><br>
+                </td>
+            </tr>
+            <tr>
+                <td style="border: none; width: 50%; padding: 0; text-align: center; vertical-align: top;">
+                    Mengetahui,<br>
+                    Kepala Sekolah SMK Kartika X-1<br>
+                    <br><br><br><br><br>
+                    <u><b>M. Hidayatullah, S.Kom</b></u><br>
+                    NIP ........................................
+                </td>
+                <td style="border: none; width: 50%; padding: 0; text-align: center; vertical-align: top;">
+                    Guru Mata Pelajaran<br>
+                    <br><br><br><br><br><br>
+                    <u><b>Allan Parindera, S.Kom</b></u><br>
+                    NIP ........................................
+                </td>
             </tr>
         </table>
+    </div>
 
-        <div class="page-break"></div>
-        <h2>LAMPIRAN RPP 5NK</h2>
+    <div class="page-break"></div>
+
+    <!-- RINCIAN PERTEMUAN -->
+    <h3>LAMPIRAN DESAIN PEMBELAJARAN: RINCIAN PERTEMUAN</h3>
+    <table>
+        <tr class="bg-gray">
+            <th width="10%">Pertemuan</th>
+            <th width="8%">JP</th>
+            <th width="30%">Materi Spesifik (Topik)</th>
+            <th width="22%">Integrasi 5NK & DPL</th>
+            <th width="30%">Aktivitas Praktik / Output</th>
+        </tr>
         
-        <div class="page-break"></div>
-        <h3>LAMPIRAN 1: INSTRUMEN ASESMEN AWAL (DIAGNOSTIK)</h3>
-        <div class="pre-text">INSTRUMEN ASESMEN AWAL (DIAGNOSTIK)
+        <tr>
+            <td align="center"><b>1</b></td>
+            <td align="center">4</td>
+            <td>Virtual Local Area Network (VLAN) & Trunking</td>
+            <td>Segmentasi segmen data batasi broadcast domain (Disiplin & Terampil).</td>
+            <td>Konfigurasi VLAN ID, access port, trunk link pada Switch Cisco.</td>
+        </tr>
 
-A. ASESMEN KOGNITIF (Pilihan Ganda & Esai Logika)
-1. Port default manakah yang digunakan untuk protokol SSH?
-   a. 21  b. 22  c. 23  d. 80
-2. Di layer manakah dalam model OSI sebuah firewall IP Tables bekerja untuk memfilter alamat IP?
-   a. Layer 1 (Physical)  b. Layer 2 (Data Link)  c. Layer 3 (Network)  d. Layer 7 (Application)
-3. Apa yang dimaksud dengan konsep CIA Triad dalam keamanan informasi?
-   a. Central, Internal, Active  b. Confidentiality, Integrity, Availability  c. Control, Identity, Authorization
-4. Jelaskan apa perbedaan mendasar antara protokol HTTP dan HTTPS dalam pengiriman data.
-5. Logika Keamanan: Mengapa membiarkan port default SSH terbuka tanpa proteksi tambahan berbahaya?
+        <tr>
+            <td align="center"><b>2</b></td>
+            <td align="center">4</td>
+            <td>Inter-VLAN Routing</td>
+            <td>Hubungkan antar segmen aman via sub-interface (Cerdas & Terampil).</td>
+            <td>Konfigurasi sub-interface router, enkapsulasi dot1Q.</td>
+        </tr>
 
-B. ASESMEN NON-KOGNITIF
-1. Apakah Anda memiliki laptop pribadi yang mendukung virtualisasi (RAM minimal 4GB/8GB) untuk praktik mandiri? (Ya/Tidak)
-2. Bagaimana ketertarikan Anda terhadap bidang Network Security / Cybersecurity? (Sangat Tertarik / Cukup / Kurang)
-3. Gaya belajar manakah yang paling memudahkan Anda memahami materi praktikum? (Visual / Auditorial / Kinestetik/Praktik langsung)</div>
-        
-        <div class="page-break"></div>
-        <h3>LAMPIRAN 2: LEMBAR KERJA PESERTA DIDIK (LKPD)</h3>
-        <div class="pre-text">LEMBAR KERJA PESERTA DIDIK (LKPD) - KELOMPOK
+        <tr>
+            <td align="center"><b>3</b></td>
+            <td align="center">4</td>
+            <td>Routing Statis & Backup Link (Failover)</td>
+            <td>Koneksi redundan jamin operasional kontinu (Disiplin & Terampil).</td>
+            <td>Konfigurasi rute statis utama dan floating static (AD berbeda) pada 3 router.</td>
+        </tr>
 
-Topik: Pengamanan Host dan Server Terintegrasi (Konfigurasi IPTables & Port Knocking)
-Nilai Karakter: Cerdas (menganalisis rule), Terampil (mengonfigurasi server), Cinta Tanah Air (menjaga integritas server lokal sekolah).
+        <tr>
+            <td align="center"><b>4</b></td>
+            <td align="center">4</td>
+            <td>Routing Dinamis OSPF Single-Area</td>
+            <td>Skalabilitas distribusi rute otomatis (Cerdas & Terampil).</td>
+            <td>Konfigurasi OSPF area 0, network statement, verifikasi status neighbor.</td>
+        </tr>
 
-Instruksi Kerja:
-1. Bentuk kelompok kerja yang terdiri dari 3-4 siswa.
-2. Siapkan dua mesin virtual (VM Debian Server sebagai target server dan VM Kali Linux sebagai penyerang/penguji).
-3. Lakukan instalasi paket daemon 'knockd' pada VM Debian Server.
-4. Konfigurasikan file /etc/iptables/rules.v4 untuk memblokir seluruh koneksi masuk kecuali port 80 (HTTP) dan port 443 (HTTPS).
-5. Konfigurasikan file /etc/knockd.conf dengan sequence ketukan (7000, 8000, 9000) untuk membuka port SSH (22) secara dinamis.
+        <tr>
+            <td align="center"><b>5</b></td>
+            <td align="center">4</td>
+            <td>Routing Dinamis OSPF Multi-Area</td>
+            <td>Hirarki area minimalkan beban kerja CPU router (Cerdas).</td>
+            <td>Konfigurasi ABR hubungkan Area 0 dan Area 10, injeksi rute default.</td>
+        </tr>
 
-Tabel Eksplorasi Pengujian:
-+---+--------------------------+-----------------------+-----------------------------+-----------------------------+
-| No| Aktivitas Pengujian      | Sebelum Knocking      | Proses / Ketukan yang Dikirim| Hasil Akhir / Status Port   |
-+---+--------------------------+-----------------------+-----------------------------+-----------------------------+
-| 1 | Port Scanning (Nmap)     | [Tertutup/Terbuka?]   | -                           | [Tertutup/Terbuka?]         |
-| 2 | SSH Connection Client    | [Berhasil/Ditolak?]   | knock <ip_server> 7000 8000..| [Berhasil/Ditolak?]         |
-| 3 | Analisis Log Server      | -                     | tail -f /var/log/syslog     | [Sebutkan log yang muncul]  |
-+---+--------------------------+-----------------------+-----------------------------+-----------------------------+
+        <tr>
+            <td align="center"><b>6</b></td>
+            <td align="center">4</td>
+            <td>Firewall NAT & Filtering ACL</td>
+            <td>Proteksi akses internet lokal, blokir ancaman (Cinta Tanah Air).</td>
+            <td>Konfigurasi NAT Overload (PAT) dan standard/extended ACL filter IP.</td>
+        </tr>
 
-Diskusi Kelompok: Analisis bagaimana port knocking dapat mempersulit penyerang yang melakukan teknik automated brute force.</div>
+        <tr>
+            <td align="center"><b>7</b></td>
+            <td align="center">4</td>
+            <td>Proxy Server & SNMP Monitoring</td>
+            <td>Filter konten negatif, monitoring utilisasi link (Budi Luhur & Cerdas).</td>
+            <td>Setup Web Proxy RouterOS blokir HTTP, aktifkan SNMP agent.</td>
+        </tr>
 
-        <div class="page-break"></div>
-        <h3>LAMPIRAN 3: RUBRIK ASESMEN</h3>
-        <div class="pre-text">RUBRIK ASESMEN SUMATIF PROYEK
+        <tr>
+            <td align="center"><b>8</b></td>
+            <td align="center">4</td>
+            <td>Troubleshooting Jaringan Terintegrasi</td>
+            <td>Analisis sistematis perbaikan kerusakan total (Cerdas & Terampil).</td>
+            <td>Pencarian error sengaja (trouble ticket), perbaikan konfigurasi, verifikasi akhir.</td>
+        </tr>
+    </table>
 
-Kriteria & Deskripsi Skor:
-1. Konfigurasi Sistem (Bobot 35%):
-   - 90-100: Firewall aktif, rule IPTables presisi, port knocking berfungsi sempurna tanpa error.
-   - 80-89: Firewall aktif, namun ada kesalahan minor pada urutan rule IPTables.
-   - 70-79: Konfigurasi berjalan namun port knocking gagal merespons ketukan dengan konsisten.
-   - <70: Konfigurasi gagal, port server tidak terlindungi.
-2. Analisis Keamanan & Log (Bobot 25%):
-   - 90-100: Mampu menganalisis log koneksi/log snort dengan detail, akurat, dan logis.
-   - 80-89: Mampu menganalisis log namun interpretasi jenis serangan kurang tepat.
-   - 70-79: Analisis log sangat minim dan hanya membaca log tanpa memahami maksudnya.
-   - <70: Tidak mampu menganalisis log sama sekali.
-3. Kerja Sama & Kolaborasi (Bobot 20%):
-   - 90-100: Pembagian tugas merata, aktif berdiskusi, menunjukkan perilaku saling membantu.
-   - 80-89: Aktif bekerja namun pembagian tugas kurang merata dalam kelompok.
-   - 70-79: Pasif dan hanya bergantung pada satu anggota kelompok.
-   - <70: Tidak menunjukkan kerja sama sama sekali.
-4. Presentasi Proyek (Bobot 20%):
-   - 90-100: Penyampaian sistematis, materi dikuasai penuh, jawaban sesi tanya jawab tepat.
-   - 80-89: Penyampaian baik namun kurang lancar saat sesi tanya jawab.
-   - 70-79: Terbata-bata dan tidak menguasai materi yang dipresentasikan.
-   - <70: Tidak mampu mempresentasikan hasil proyek.
+    <div class="page-break"></div>
 
-Rumus Nilai Akhir (NA):
-NA = (Skor Konfigurasi * 0.35) + (Skor Analisis * 0.25) + (Skor Kolaborasi * 0.20) + (Skor Presentasi * 0.20)</div>
+    <h2 style="font-size: 14px; text-transform: uppercase;">LAMPIRAN DOKUMEN INSTRUMEN ASESMEN & LKPD</h2>
+    <hr style="border: 1px solid #000;"><br>
 
-        <div class="page-break"></div>
-        <h3>LAMPIRAN 4: RINGKASAN MATERI PEMBELAJARAN</h3>
-        <div class="pre-text">RINGKASAN MATERI PEMBELAJARAN KEAMANAN JARINGAN
+    
+    <table>
+        <tr class="bg-gray"><td colspan="3"><b>LAMPIRAN 1: INSTRUMEN ASESMEN AWAL (DIAGNOSTIK)</b></td></tr>
+        <tr><td colspan="3">INSTRUMEN ASESMEN AWAL (SMK KARTIKA X-1)<br><br>A. ASESMEN KOGNITIF (SOAL ESAI LOGIKA JARINGAN)<br>1. Terdapat 2 switch terhubung kabel tunggal. Host VLAN 10 di switch A ingin komunikasi dengan host VLAN 10 di switch B. Apa syarat konfigurasi pada link antar switch tersebut? Jelaskan logikanya!<br>2. Sebuah kantor memiliki 2 ISP. ISP-A (100 Mbps, utama) dan ISP-B (20 Mbps, cadangan). Bagaimana cara mengatur tabel routing statis agar traffic otomatis lewat ISP-B hanya saat ISP-A mati?<br>3. Mengapa dynamic routing OSPF lebih direkomendasikan dibanding routing statis untuk jaringan skala besar dengan puluhan router? Jelaskan dari sisi efisiensi update rute!<br>4. Mengapa IP Privat (misal: 192.168.1.0/24) tidak bisa langsung dipakai browsing ke internet tanpa NAT?<br>5. Di mana posisi terbaik meletakkan ACL penolakan akses (deny rule) untuk meminimalkan beban traffic di jaringan? Berikan analisis Anda.<br><br>B. ASESMEN NON-KOGNITIF (KESIAPAN BELAJAR)<br>1. Apakah Anda memiliki komputer/laptop pribadi dengan spesifikasi minimal RAM 4GB untuk simulasi GNS3/Packet Tracer? (Ya / Tidak)<br>2. Tuliskan tools simulator jaringan yang pernah Anda gunakan sebelumnya!<br>3. Apakah Anda lebih cepat paham materi melalui membaca modul instruksi kerja, melihat video demo, atau langsung trial-error di perangkat?<br>4. Bersediakah Anda berkolaborasi aktif dalam kelompok kerja TEFA dan membagi tugas secara adil? (Ya / Tidak)</td></tr>
+    </table><div class="page-break"></div>
 
-1. KEBIJAKAN PENGGUNAAN JARINGAN (KPJ) & ANCAMAN:
-   KPJ (Network Usage Policy) mengatur hak akses, tanggung jawab, dan batasan penggunaan infrastruktur jaringan. Ancaman meliputi Sniffing, Spoofing, Brute Force, Denial of Service (DoS), dan Man-in-the-Middle (MitM).
-2. STATEFUL FIREWALL (IPTABLES):
-   Bekerja memeriksa status paket (ESTABLISHED, RELATED, NEW, INVALID). Rule dasar membatasi input dengan default policy DROP. Syntax utama: `iptables -A INPUT -p tcp --dport 22 -j ACCEPT`.
-3. PORT KNOCKING:
-   Mekanisme keamanan dengan cara menyembunyikan port aktif di balik firewall. Port hanya akan terbuka jika klien mengirimkan paket data ke urutan port tertentu secara berurutan sesuai konfigurasi pada file `/etc/knockd.conf`.
-4. SERVER AUTENTIKASI (AAA & RADIUS):
-   Authentication (siapa user), Authorization (apa haknya), Accounting (apa aktivitasnya). FreeRADIUS mensentralisasi otentikasi user perangkat jaringan kabel, nirkabel, maupun server lokal.
-5. INTRUSION DETECTION SYSTEM (IDS) SNORT:
-   Sistem monitoring trafik real-time yang menggunakan signatures untuk mengenali anomali paket data. Aturan ditulis dalam file `/etc/snort/rules/local.rules`.
-6. HARDENING SERVICES & SSL/TLS:
-   Langkah mengamankan OS dan aplikasi. SSH Hardening: matikan root login, ubah port 22 ke port kustom, gunakan SSH Key. SSL/TLS: mengenkripsi komunikasi web server (HTTP -> HTTPS) menggunakan sertifikat digital.
-7. KRIPTOGRAFI:
-   Seni mengamankan pesan. Kriptografi Simetris (AES, DES) menggunakan satu kunci untuk enkripsi/dekripsi. Kriptografi Asimetris (RSA) menggunakan pasangan public key dan private key.
-8. VIRTUAL PRIVATE NETWORK (VPN):
-   Teknologi untuk membangun jalur komunikasi terenkripsi (tunnel) melalui jaringan publik. Protokol populer: OpenVPN dan IPsec yang menjamin kerahasiaan (confidentiality) dan integritas data remote.</div>
+    
+    <table>
+        <tr class="bg-gray"><td colspan="2"><b>LAMPIRAN 2: LEMBAR KERJA PESERTA DIDIK (LKPD) KELOMPOK</b></td></tr>
+        <tr><td colspan="2">LEMBAR KERJA PESERTA DIDIK (LKPD) - PROYEK INFRASTRUKTUR TEFA<br><br>Nama Kelompok:<br>Anggota:<br>1. __________________ (Peran: Network Engineer)<br>2. __________________ (Peran: SecOps Administrator)<br>3. __________________ (Peran: Quality Assurance)<br><br>A. INDIKATOR 5NK<br>- Cerdas: Desain alokasi subnetting IP efisien tanpa bentrok.<br>- Terampil: Eksekusi konfigurasi CLI cepat tanpa error sintaks.<br>- Cinta Tanah Air: Implementasi pertahanan siber lokal via firewall ACL.<br><br>B. LANGKAH KERJA<br>1. Siapkan 2 Routerboard MikroTik dan 2 Switch Manageable.<br>2. Rancang topologi: PC-1 (VLAN 10) & PC-2 (VLAN 20) -> Switch -> Router-1 -> Router-2 -> Internet.<br>3. Konfigurasikan Trunking 802.1Q dan Sub-interface di Router-1 (VLAN 10: 192.168.10.1/24, VLAN 20: 192.168.20.1/24).<br>4. Aktifkan routing dinamis OSPF antara Router-1 dan Router-2.<br>5. Konfigurasikan NAT Overload di Router-2 kearah internet.<br>6. Terapkan ACL di Router-1: batasi akses PC-2 (VLAN 20) menuju Web Server di VLAN 10.<br><br>C. TABEL UJI FUNGSIONALITAS<br>| No | Uji Kasus | Perintah Verifikasi | Hasil Diharapkan | Status |<br>|---|---|---|---|---|<br>| 1 | Inter-VLAN Routing | ping dari PC-1 ke PC-2 | Reply sukses | |<br>| 2 | OSPF Neighbor | show ip ospf neighbor / routing table | Status FULL / Rute dinamik terbentuk | |<br>| 3 | ACL Filter | ping dari PC-2 ke IP Web Server VLAN 10 | Destination Host Unreachable / Packet Drop | |<br>| 4 | NAT Internet | ping 8.8.8.8 dari PC-1 | Reply sukses | |<br><br>D. Lembar Troubleshooting Kelompok: Tuliskan satu kendala/error yang ditemui saat praktikum beserta solusi pemecahannya secara gotong royong!</td></tr>
+    </table><div class="page-break"></div>
 
-        <div class="page-break"></div>
-        <h3>LAMPIRAN 5: SOAL EVALUASI & KUNCI JAWABAN</h3>
-        <div class="pre-text">BANK SOAL EVALUASI KEAMANAN JARINGAN
+    
+    <table>
+        <tr class="bg-gray"><td colspan="6"><b>LAMPIRAN 3: RUBRIK ASESMEN SUMATIF (KARYA AKHIR / CAPSTONE PROJECT)</b></td></tr>
+        <tr><td colspan="6">RUBRIK ASESMEN SUMATIF PROYEK TEFA (SMK KARTIKA X-1)<br><br>A. DETAIL ASPEK PENILAIAN<br><br>1. KELENGKAPAN & KEBENARAN KONFIGURASI (Bobot 40%)<br>- Skor 90-100: Semua fitur (VLAN, OSPF, NAT, ACL, Proxy) terkonfigurasi sempurna sesuai skema, bebas error.<br>- Skor 80-89: Konfigurasi utama berjalan, ada deviasi minor pada penamaan interface atau segmentasi IP.<br>- Skor 70-79: Jaringan terhubung sebagian, fungsi keamanan (ACL / Proxy) gagal berjalan.<br>- Skor < 70: Konfigurasi gagal total, tidak ada konektivitas.<br><br>2. ANALISIS TROUBLESHOOTING & RECOVERY (Bobot 20%)<br>- Skor 90-100: Mampu selesaikan gangguan buatan penguji dalam waktu < 10 menit dengan analisis logis.<br>- Skor 80-89: Mampu selesaikan gangguan dalam waktu 10-20 menit dengan bantuan dokumentasi.<br>- Skor 70-79: Butuh arahan berulang dari guru untuk mendeteksi lokasi error.<br>- Skor < 70: Tidak mampu menganalisis maupun memperbaiki kerusakan sistem.<br><br>3. PRESENTASI & DEMO SISTEM (Bobot 20%)<br>- Skor 90-100: Presentasi lugas, runut, demo fungsional lancar pada percobaan pertama.<br>- Skor 80-89: Presentasi baik, demo sukses setelah satu kali penyesuaian minor.<br>- Skor 70-79: Kurang kuasai materi presentasi, demo tidak lancar.<br>- Skor < 70: Tidak siap presentasi, demo gagal total.<br><br>4. SIKAP KERJA & 5NK (Bobot 20%)<br>- Skor 90-100: Terapkan K3, disiplin SOP, gotong royong tinggi, jaga kebersihan lab.<br>- Skor 80-89: Terapkan SOP dengan baik, kerja sama aktif namun kurang inisiatif kebersihan.<br>- Skor 70-79: Bekerja secara individualistis, sesekali abaikan instruksi lab.<br>- Skor < 70: Melanggar aturan keselamatan lab, tidak menunjukkan etika kerja.<br><br>B. RUMUS NILAI AKHIR (NA)<br>NA = (Skor_Konfigurasi * 0.40) + (Skor_Analisis * 0.20) + (Skor_Presentasi * 0.20) + (Skor_Sikap * 0.20)<br>*Batas Kelulusan Minimal (KKM): 75. Di bawah 75 wajib remedial.</td></tr>
+    </table><div class="page-break"></div>
 
-1. Manakah perintah IPTables yang benar untuk memblokir paket ping (ICMP) dari luar ke server?
-   a. iptables -A INPUT -p icmp -j ACCEPT
-   b. iptables -A INPUT -p icmp -j DROP
-   c. iptables -A OUTPUT -p icmp -j DROP
-   d. iptables -A FORWARD -p icmp -j REJECT
+    
+    <h3 style="text-align: left; border-bottom: 2px solid #000; padding-bottom: 5px;">LAMPIRAN 4: RINGKASAN MATERI AJAR PENDUKUNG</h3>
+    <div style="font-size: 12px; margin-top: 10px;">RINGKASAN MATERI PEMBELAJARAN (ADMINISTRASI INFRASTRUKTUR JARINGAN)<br><br>1. SEGMENTASI JARINGAN (VLAN & TRUNKING)<br>VLAN memecah broadcast domain fisik menjadi domain logis terpisah pada switch layer 2 guna tingkatkan efisiensi bandwidth dan aspek keamanan (Disiplin SOP). Port trunking (IEEE 802.1Q) menyalurkan banyak ID VLAN dalam satu link inter-switch. Inter-VLAN routing menjembatani komunikasi antar segmen VLAN lewat router (sub-interface/router-on-a-stick) atau switch layer 3.<br><br>2. REDUNDANSI KONEKSI (ROUTING STATIS & FAILOVER)<br>Routing statis dikonfigurasi manual dengan mendefinisikan network tujuan dan next-hop. Guna cegah terputusnya koneksi akibat putusnya link fisik, diimplementasikan Floating Static Route dengan memanfaatkan nilai Administrative Distance (AD). Jalur utama memiliki AD lebih kecil (misal 1), jalur cadangan diberi AD lebih tinggi (misal 5).<br><br>3. ROUTING DINAMIS SKALA INDUSTRI (OSPF)<br>Open Shortest Path First (OSPF) memakai algoritma Dijkstra untuk kalkulasi rute terdekat berdasar metrik cost link. OSPF membagi jaringan menjadi beberapa area (Area 0 / Backbone wajib ada) guna lokalisasi update LSA (Link State Advertisement), kurangi beban CPU/RAM router pada infrastruktur skala menengah-besar.<br><br>4. KEAMANAN JARINGAN (FIREWALL NAT & ACL)<br>NAT (Network Address Translation) menerjemahkan IP Privat ke IP Publik. PAT (NAT Overload) menghemat IP publik dengan memetakan port unik untuk tiap koneksi internal. Access Control List (ACL) menyaring paket data secara sekuensial berdasarkan alamat IP asal/tujuan, protokol, serta nomor port tcp/udp untuk penegakan kebijakan keamanan digital.<br><br>5. PROXY & TRAFFIC MONITORING<br>Web proxy bertindak sebagai perantara koneksi client, berfungsi memblokir situs web tidak aman/tidak pantas (Budi Luhur). Simple Network Management Protocol (SNMP) memantau status kesehatan hardware (CPU load, memory, bandwidth) secara tersentral ke Network Monitoring Tool, didukung Syslog untuk logging aktivitas event error sistem secara terpusat.</div><div class="page-break"></div>
 
-2. Di manakah letak file konfigurasi utama untuk menentukan urutan ketukan pada daemon knockd?
-   a. /etc/iptables/rules.v4
-   b. /etc/knockd.conf
-   c. /var/log/syslog
-   d. /etc/init.d/knockd
+    
+    <h3 style="text-align: left; border-bottom: 2px solid #000; padding-bottom: 5px;">LAMPIRAN 5: KUMPULAN SOAL ASESMEN FORMATIF & SUMATIF</h3>
+    <div style="font-size: 12px; margin-top: 10px;">BANK SOAL EVALUASI AKHIR (PILIHAN GANDA)<br><br>1. Port switch yang dikonfigurasikan untuk menghubungkan switch dengan router pada arsitektur router-on-a-stick harus diset ke mode...<br>   A. Access<br>   B. Dynamic Auto<br>   C. Trunk<br>   D. Dynamic Desirable<br>   E. Binding<br>   Kunci Jawaban: C<br><br>2. Protokol enkapsulasi standar industri terbuka yang digunakan untuk trunking VLAN adalah...<br>   A. ISL<br>   B. VTP<br>   C. IEEE 802.1Q<br>   D. DTP<br>   E. OSPF<br>   Kunci Jawaban: C<br><br>3. Di bawah ini konfigurasi floating static route untuk jalur cadangan yang tepat jika jalur utama adalah 'ip route 0.0.0.0 0.0.0.0 192.168.1.1' adalah...<br>   A. ip route 0.0.0.0 0.0.0.0 192.168.2.1<br>   B. ip route 0.0.0.0 0.0.0.0 192.168.2.1 5<br>   C. ip route 0.0.0.0 0.0.0.0 192.168.1.1 1<br>   D. ip route 192.168.2.0 255.255.255.0 192.168.1.1<br>   E. ip route 0.0.0.0 0.0.0.0 192.168.2.1 0<br>   Kunci Jawaban: B<br><br>4. Mengapa OSPF membagi topologi jaringan yang besar menjadi beberapa area terpisah?<br>   A. Agar router tidak memerlukan IP Address.<br>   B. Mengurangi overhead pemrosesan database rute (LSA) pada CPU router.<br>   C. Menggantikan fungsi enkapsulasi VLAN trunking.<br>   D. Mempercepat proses translasi alamat IP pada NAT.<br>   E. Membatasi hak akses internet client secara fisik.<br>   Kunci Jawaban: B<br><br>5. Tipe NAT yang memetakan banyak IP internal privat ke satu IP eksternal publik dengan memanfaatkan pembedaan nomor port adalah...<br>   A. Static NAT<br>   B. Dynamic NAT<br>   C. NAT Overload / PAT<br>   D. Destination NAT<br>   E. One-to-One NAT<br>   Kunci Jawaban: C<br><br>6. Sintaks perintah ACL standard pada Cisco Router untuk memblokir host 192.168.10.50 agar tidak bisa mengakses jaringan manapun adalah...<br>   A. access-list 1 permit host 192.168.10.50<br>   B. access-list 1 deny host 192.168.10.50<br>   C. access-list 101 deny ip host 192.168.10.50 any<br>   D. access-list 101 permit ip host 192.168.10.50 any eq 80<br>   E. access-list 1 deny 192.168.10.50 255.255.255.255<br>   Kunci Jawaban: B</div>
 
-3. Protokol AAA yang bersifat open standard dan sering digunakan untuk mengamankan akses jaringan wireless/WPA-Enterprise adalah...
-   a. TACACS+
-   b. RADIUS
-   c. LDAP
-   d. Kerberos
-
-4. Rule Snort berikut: `alert icmp any any -> $HOME_NET any (msg:"Ping Detect"; sid:100001;)` berfungsi untuk...
-   a. Memblokir seluruh paket ICMP
-   b. Mendeteksi paket ICMP masuk ke jaringan lokal dan memicu alert
-   c. Mengirimkan paket ICMP dari server
-   d. Menghapus log ICMP otomatis
-
-5. Mengapa penggunaan otentikasi SSH Key-Pair jauh lebih aman dibandingkan password biasa?
-   a. Karena SSH Key menggunakan enkripsi simetris
-   b. Karena private key tidak pernah dikirimkan melalui jaringan saat proses handshake
-   c. Karena SSH Key otomatis mematikan port SSH
-   d. Karena SSH Key tidak membutuhkan memori RAM server
-
-KUNCI JAWABAN:
-1. b. iptables -A INPUT -p icmp -j DROP
-2. b. /etc/knockd.conf
-3. b. RADIUS
-4. b. Mendeteksi paket ICMP masuk ke jaringan lokal dan memicu alert
-5. b. Karena private key tidak pernah dikirimkan melalui jaringan saat proses handshake</div>
-    </body>
-    </html>
+</body>
+</html>

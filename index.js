@@ -17,7 +17,8 @@ const upload = multer({ storage: multer.memoryStorage() });
 // Setup client pointing to local 9Router API gateway
 const openai = new OpenAI({
     apiKey: 'sk-e085ba40f2c63bcd-iaxa6d-ff2194e5',
-    baseURL: 'http://localhost:20128/v1'
+    baseURL: 'http://localhost:20128/v1',
+    timeout: 30000 // 30s timeout to prevent hanging requests
 });
 
 // Fix 11: limit upload size
@@ -87,48 +88,45 @@ function setSessionState(req, state) {
 }
 
 // Fix 5: RPP schema definition
-const RPP_JSON_SCHEMA = `{
-  "spesifikasi": {
-    "satuan_pendidikan": "SMK Kartika X-1",
-    "mata_pelajaran": "Data Science (Konsentrasi Keahlian TKJ - Mapel Pilihan)",
-    "kelas_semester": "string (misal: XI TKJ / Ganjil (Fase F - 1 Semester))",
-    "topik": "string",
-    "alokasi_waktu": "string"
+const RPP_JSON_SCHEMA = JSON.stringify({
+  spesifikasi: {
+    satuan_pendidikan: "SMK Kartika X-1",
+    mata_pelajaran: "Data Science (Konsentrasi Keahlian TKJ - Mapel Pilihan)",
+    kelas_semester: "string (misal: XI TKJ / Ganjil (Fase F - 1 Semester))",
+    topik: "string",
+    alokasi_waktu: "string"
   },
-  "identifikasi": {
-    "asesmen_awal": "string",
-    "dpl": {"dpl1":true,"dpl2":false,"dpl3":true,"dpl4":true,"dpl5":true,"dpl6":true,"dpl7":false,"dpl8":true},
-    "nilai_5nk": {"budi_luhur":true,"disiplin":true,"cinta_tanah_air":true,"cerdas":true,"terampil":true},
-    "indikator_5nk": "string",
-    "materi_integrasi": "string"
+  identifikasi: {
+    asesmen_awal: "string",
+    dpl: {dpl1:true,dpl2:false,dpl3:true,dpl4:true,dpl5:true,dpl6:true,dpl7:false,dpl8:true},
+    nilai_5nk: {budi_luhur:true,disiplin:true,cinta_tanah_air:true,cerdas:true,terampil:true},
+    indikator_5nk: "string",
+    materi_integrasi: "string"
   },
-  "desain": {
-    "tujuan_pembelajaran": ["string"],
-    "metode": "string",
-    "kemitraan": "string",
-    "lingkungan": "string",
-    "digital": "string"
+  desain: {
+    tujuan_pembelajaran: ["string"],
+    metode: "string",
+    kemitraan: "string",
+    lingkungan: "string",
+    digital: "string"
   },
-  "pengalaman": {
-    "awal": ["string"],
-    "inti_memahami": ["string"],
-    "inti_mengaplikasi": ["string"],
-    "inti_merefleksi": ["string"],
-    "penutup": ["string"]
+  pengalaman: {
+    awal: ["string"],
+    inti_memahami: ["string"],
+    inti_mengaplikasi: ["string"],
+    inti_merefleksi: ["string"],
+    penutup: ["string"]
   },
-  "asesmen": {
-    "proses": "string",
-    "akhir": "string"
-  },
-  "lampiran": {
-    "pertemuan": [{"no":"1","jp":"4","materi":"string","integrasi":"string","aktivitas":"string"}],
-    "l1_diagnostik": "string",
-    "l2_lkpd": "string",
-    "l3_rubrik": "string",
-    "l4_materi": "string",
-    "l5_soal": "string"
+  asesmen: { proses: "string", akhir: "string" },
+  lampiran: {
+    pertemuan: [{no:"1",jp:"4",materi:"string",integrasi:"string",aktivitas:"string"}],
+    l1_diagnostik: "string",
+    l2_lkpd: "string",
+    l3_rubrik: "string",
+    l4_materi: "string",
+    l5_soal: "string"
   }
-}`;
+});
 
 // Fix 4: Regex Parsing Robustness
 function parseLLMJson(respText) {

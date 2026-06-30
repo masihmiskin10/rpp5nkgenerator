@@ -10,7 +10,7 @@ const pdfParse = require('pdf-parse');
 const { v4: uuidv4 } = require('uuid');
 
 const app = express();
-const port = 8501;
+const port = process.env.PORT || 8501;
 
 const upload = multer({ storage: multer.memoryStorage() });
 

@@ -14,10 +14,10 @@ const port = process.env.PORT || 8501;
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Setup client pointing to local 9Router API gateway
+// Setup client pointing to local 9Router API gateway or dynamic environment URL
 const openai = new OpenAI({
-    apiKey: 'sk-e085ba40f2c63bcd-iaxa6d-ff2194e5',
-    baseURL: 'http://localhost:20128/v1',
+    apiKey: process.env.OPENAI_API_KEY || 'sk-e085ba40f2c63bcd-iaxa6d-ff2194e5',
+    baseURL: process.env.OPENAI_BASE_URL || 'http://localhost:20128/v1',
     timeout: 30000 // 30s timeout to prevent hanging requests
 });
 

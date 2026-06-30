@@ -151,7 +151,7 @@ app.post('/api/parse', async (req, res) => {
     const selectedModel = model || "ag/gemini-3.1-pro-low";
     const currentState = getSessionState(req);
     try {
-        const trimmed = text.substring(0, 10000);
+        const trimmed = text.substring(0, 100000); // Increased from 10k to 100k characters
         const prompt = `Uraikan RPP lama berikut ke dalam JSON terstandarisasi untuk RPP 5NK. Kembalikan HANYA JSON valid tanpa teks lain.\n\nKunci JSON wajib dan strukturnya:\n${RPP_JSON_SCHEMA}\n\nIsi nilai-nilai string berdasarkan ekstraksi cerdas dari teks RPP Lama berikut:\n${trimmed}`;
         const response = await openai.chat.completions.create({
             model: selectedModel,
